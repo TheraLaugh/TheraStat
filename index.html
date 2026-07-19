@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
+        /* نفس الأنماط السابقة، اختصرتها هنا للاختصار، ولكن يمكنك استخدام نفس الأنماط السابقة */
         * {
             margin: 0;
             padding: 0;
@@ -592,7 +593,10 @@
                         for (let item of data) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -603,7 +607,10 @@
                         for (let item of data.relationships_followers) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -613,7 +620,10 @@
                         for (let item of data.followers) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -631,10 +641,16 @@
                     // الحالة الأكثر شيوعاً: relationships_following مع title
                     if (data.relationships_following && Array.isArray(data.relationships_following)) {
                         for (let item of data.relationships_following) {
-                            if (item.title) set.add(item.title.trim());
+                            if (item.title) {
+                                const name = item.title.trim();
+                                if (name) set.add(name);
+                            }
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -643,10 +659,16 @@
                     // حالات أخرى للتوافق
                     if (Array.isArray(data)) {
                         for (let item of data) {
-                            if (item.title) set.add(item.title.trim());
+                            if (item.title) {
+                                const name = item.title.trim();
+                                if (name) set.add(name);
+                            }
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -654,10 +676,16 @@
                     }
                     if (data.following && Array.isArray(data.following)) {
                         for (let item of data.following) {
-                            if (item.title) set.add(item.title.trim());
+                            if (item.title) {
+                                const name = item.title.trim();
+                                if (name) set.add(name);
+                            }
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
-                                    if (sub.value) set.add(sub.value.trim());
+                                    if (sub.value) {
+                                        const name = sub.value.trim();
+                                        if (name) set.add(name);
+                                    }
                                 }
                             }
                         }
@@ -737,6 +765,7 @@
                 let allFollowers = new Set();
                 for (let file of followersFiles) {
                     const set = extractUsernamesFromFollowers(file.content);
+                    console.log(`📝 استخراج من ${file.name}: ${set.size} اسم`);
                     for (let u of set) allFollowers.add(u);
                 }
 
@@ -744,6 +773,7 @@
                 let allFollowing = new Set();
                 for (let file of followingFiles) {
                     const set = extractUsernamesFromFollowing(file.content);
+                    console.log(`📝 استخراج من ${file.name}: ${set.size} اسم`);
                     for (let u of set) allFollowing.add(u);
                 }
 
