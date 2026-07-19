@@ -282,14 +282,13 @@
             .logo h1 { font-size: 1.8rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        /* Scroll styling */
         .table-responsive::-webkit-scrollbar { height: 6px; }
         .table-responsive::-webkit-scrollbar-track { background: #0e121f; border-radius: 10px; }
         .table-responsive::-webkit-scrollbar-thumb { background: #3d4460; border-radius: 10px; }
     </style>
 </head>
 <body>
-<div class="container" id="app">
+<div class="container">
     <div class="brand">
         <div class="logo">
             <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
@@ -298,6 +297,7 @@
         <div class="badge"><i class="fas fa-shield-alt"></i> معالجة محلية 100%</div>
     </div>
 
+    <!-- رفع الملفات -->
     <div class="card">
         <div class="card-header" style="cursor:default;">
             <i class="fas fa-upload"></i>
@@ -599,14 +599,14 @@
             console.log('📊 Followers files:', followersFiles.length);
             console.log('📊 Following files:', followingFiles.length);
 
-            // استخراج جميع المتابعين
+            // استخراج جميع المتابعين (دمج جميع ملفات المتابعين)
             let allFollowers = new Set();
             for (let file of followersFiles) {
                 const set = extractUsernamesFromFollowers(file.content);
                 for (let u of set) allFollowers.add(u);
             }
 
-            // استخراج جميع المتابَعين
+            // استخراج جميع المتابَعين (دمج جميع ملفات المتابَعين)
             let allFollowing = new Set();
             for (let file of followingFiles) {
                 const set = extractUsernamesFromFollowing(file.content);
@@ -615,27 +615,29 @@
 
             console.log('📊 Total Followers:', allFollowers.size);
             console.log('📊 Total Following:', allFollowing.size);
+            console.log('📝 Sample Followers:', Array.from(allFollowers).slice(0, 5));
+            console.log('📝 Sample Following:', Array.from(allFollowing).slice(0, 5));
 
             if (allFollowers.size === 0 && allFollowing.size === 0) {
                 alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة.');
                 return;
             }
 
-            // ----- المقارنات الأساسية (المنطق الصحيح) -----
+            // ===== المقارنات الأساسية (المنطق الصحيح) =====
             
-            // 1. يتابعني ويتابعه = موجود في كلا الملفين
+            // 1. يتابعني ويتابعه = موجود في كلا الملفين (تقاطع)
             const mutual = new Set();
             for (let f of allFollowers) {
                 if (allFollowing.has(f)) mutual.add(f);
             }
 
-            // 2. يتابعني ولا أتابعه = موجود في followers فقط
+            // 2. يتابعني ولا أتابعه = موجود في followers فقط (not in following)
             const notFollowing = new Set();
             for (let f of allFollowers) {
                 if (!allFollowing.has(f)) notFollowing.add(f);
             }
 
-            // 3. أتابعه ولا يتابعني = موجود في following فقط
+            // 3. أتابعه ولا يتابعني = موجود في following فقط (not in followers)
             const notFollowBack = new Set();
             for (let f of allFollowing) {
                 if (!allFollowers.has(f)) notFollowBack.add(f);
@@ -658,11 +660,12 @@
             renderTable(table1Container, notFollowing);
             renderTable(table2Container, notFollowBack);
 
-            // ----- المقارنات التاريخية -----
+            // ===== المقارنات التاريخية (المتابعين الجدد ومن ألغى المتابعة) =====
             let newFollowers = new Set();
             let unfollowers = new Set();
 
             if (followersFiles.length >= 2) {
+                // نأخذ أول ملف وآخر ملف للمقارنة
                 const oldest = followersFiles[0];
                 const newest = followersFiles[followersFiles.length - 1];
 
@@ -681,6 +684,10 @@
 
                 console.log('📊 New Followers:', newFollowers.size);
                 console.log('📊 Unfollowers:', unfollowers.size);
+            } else {
+                // إذا كان هناك ملف واحد فقط، نعرض رسالة
+                table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
+                table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
             }
 
             count3.innerText = newFollowers.size;
@@ -690,7 +697,7 @@
             renderTable(table3Container, newFollowers);
             renderTable(table4Container, unfollowers);
 
-            // فتح جميع الأقسام تلقائياً
+            // فتح جميع الأقسام تلقائياً (باستثناء الجداول التي تبقى مطوية)
             document.querySelectorAll('.card-body').forEach(el => el.classList.add('open'));
             document.querySelectorAll('.toggle-icon i').forEach(el => {
                 el.classList.remove('fa-chevron-down');
