@@ -237,12 +237,6 @@
             .logo h1 { font-size: 1.8rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        .file-upload-section {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
         .file-type-badge {
             font-size: 0.75rem;
             padding: 0.2rem 0.8rem;
@@ -252,6 +246,24 @@
         .file-type-badge.followers { background: #4a2f6b; color: #c4b5ff; }
         .file-type-badge.following { background: #2f4a6b; color: #8ab4ff; }
         .file-type-badge.history { background: #2f6b4a; color: #8affb4; }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #8892b0;
+        }
+        .legend span { display: flex; align-items: center; gap: 6px; }
+        .legend .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .legend .dot.green { background: #4ade80; }
+        .legend .dot.red { background: #f87171; }
+        .legend .dot.purple { background: #b8abff; }
     </style>
 </head>
 <body>
@@ -290,6 +302,11 @@
             <h2>نظرة عامة</h2>
             <span class="sub">إحصائيات</span>
         </div>
+        <div class="legend">
+            <span><span class="dot purple"></span> يتابعني ويتابعه</span>
+            <span><span class="dot green"></span> يتابعني ولا أتابعه</span>
+            <span><span class="dot red"></span> أتابعه ولا يتابعني</span>
+        </div>
         <div class="stats-grid" id="statsGrid">
             <div class="stat-item"><div class="num" id="followersCount">0</div><div class="label">المتابعين</div></div>
             <div class="stat-item"><div class="num" id="followingCount">0</div><div class="label">يتابعهم</div></div>
@@ -301,7 +318,7 @@
 
     <div class="card" id="table1Card" style="display: none;">
         <div class="card-header">
-            <i class="fas fa-user-plus"></i>
+            <i class="fas fa-user-plus" style="color: #4ade80;"></i>
             <h2>يتابعني ولا أتابعه</h2>
             <span class="sub" id="count1">0</span>
         </div>
@@ -310,7 +327,7 @@
 
     <div class="card" id="table2Card" style="display: none;">
         <div class="card-header">
-            <i class="fas fa-user-minus"></i>
+            <i class="fas fa-user-minus" style="color: #f87171;"></i>
             <h2>أتابعه ولا يتابعني</h2>
             <span class="sub" id="count2">0</span>
         </div>
@@ -319,7 +336,7 @@
 
     <div class="card" id="table3Card" style="display: none;">
         <div class="card-header">
-            <i class="fas fa-user-clock"></i>
+            <i class="fas fa-user-clock" style="color: #4ade80;"></i>
             <h2>المتابعين الجدد</h2>
             <span class="sub" id="count3">0</span>
         </div>
@@ -328,7 +345,7 @@
 
     <div class="card" id="table4Card" style="display: none;">
         <div class="card-header">
-            <i class="fas fa-user-slash"></i>
+            <i class="fas fa-user-slash" style="color: #f87171;"></i>
             <h2>ألغوا المتابعة</h2>
             <span class="sub" id="count4">0</span>
         </div>
@@ -513,7 +530,6 @@
             // تصنيف الملفات
             let followersFiles = [];
             let followingFiles = [];
-            let unknownFiles = [];
 
             for (let file of storedFiles) {
                 if (file.type === 'followers') {
@@ -521,22 +537,18 @@
                 } else if (file.type === 'following') {
                     followingFiles.push(file);
                 } else {
-                    unknownFiles.push(file);
+                    // محاولة تحديد نوع الملفات غير المعروفة
+                    try {
+                        const data = JSON.parse(file.content);
+                        if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
+                            followingFiles.push(file);
+                        } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
+                            followersFiles.push(file);
+                        } else if (data.relationships_followers || data.followers) {
+                            followersFiles.push(file);
+                        }
+                    } catch(e) {}
                 }
-            }
-
-            // محاولة تحديد نوع الملفات غير المعروفة
-            for (let file of unknownFiles) {
-                try {
-                    const data = JSON.parse(file.content);
-                    if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
-                        followingFiles.push(file);
-                    } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
-                        followersFiles.push(file);
-                    } else if (data.relationships_followers || data.followers) {
-                        followersFiles.push(file);
-                    }
-                } catch(e) {}
             }
 
             console.log('📊 Followers files:', followersFiles.length);
@@ -558,30 +570,37 @@
 
             console.log('📊 Total Followers:', allFollowers.size);
             console.log('📊 Total Following:', allFollowing.size);
+            console.log('📝 Sample Followers:', Array.from(allFollowers).slice(0, 5));
+            console.log('📝 Sample Following:', Array.from(allFollowing).slice(0, 5));
 
             if (allFollowers.size === 0 && allFollowing.size === 0) {
                 alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة.');
                 return;
             }
 
-            // ----- المقارنات الأساسية -----
-            // 1. يتابعني ويتابعه (موجود في كلا الملفين)
+            // ----- المقارنات الأساسية (المنطق الصحيح) -----
+            
+            // 1. يتابعني ويتابعه = موجود في كلا الملفين (intersection)
             const mutual = new Set();
             for (let f of allFollowers) {
                 if (allFollowing.has(f)) mutual.add(f);
             }
 
-            // 2. يتابعني ولا أتابعه (موجود في followers فقط)
+            // 2. يتابعني ولا أتابعه = موجود في followers فقط (not in following)
             const notFollowing = new Set();
             for (let f of allFollowers) {
                 if (!allFollowing.has(f)) notFollowing.add(f);
             }
 
-            // 3. أتابعه ولا يتابعني (موجود في following فقط)
+            // 3. أتابعه ولا يتابعني = موجود في following فقط (not in followers)
             const notFollowBack = new Set();
             for (let f of allFollowing) {
                 if (!allFollowers.has(f)) notFollowBack.add(f);
             }
+
+            console.log('📊 Mutual:', mutual.size);
+            console.log('📊 Not Following (followers only):', notFollowing.size);
+            console.log('📊 Not Follow Back (following only):', notFollowBack.size);
 
             // تحديث الإحصائيات
             followersCount.innerText = allFollowers.size;
@@ -620,6 +639,10 @@
 
                 console.log('📊 New Followers:', newFollowers.size);
                 console.log('📊 Unfollowers:', unfollowers.size);
+            } else {
+                // إذا كان هناك ملف واحد فقط، نعرض رسالة
+                table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
+                table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
             }
 
             count3.innerText = newFollowers.size;
