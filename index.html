@@ -26,13 +26,12 @@
             background-image: radial-gradient(circle at 20% 30%, #1a1f2e 0%, #0b0d15 90%);
         }
 
-        /* الحاوية الرئيسية */
         .container {
             max-width: 1100px;
             width: 100%;
         }
 
-        /* الهوية البصرية - مثل TheraQR و TheraGYM */
+        /* Branding */
         .brand {
             display: flex;
             align-items: center;
@@ -74,7 +73,7 @@
             margin-left: 8px;
         }
 
-        /* البطاقات */
+        /* Cards */
         .card {
             background: rgba(22, 27, 40, 0.7);
             backdrop-filter: blur(12px);
@@ -114,7 +113,7 @@
             border-radius: 40px;
         }
 
-        /* رفع الملفات */
+        /* Upload Zone */
         .upload-zone {
             border: 2px dashed #3d4460;
             border-radius: 24px;
@@ -146,7 +145,7 @@
             display: none;
         }
 
-        /* أزرار وقياسات */
+        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #8a7cff, #6b5cdf);
             border: none;
@@ -163,7 +162,7 @@
             border: 1px solid #9b8eff55;
             box-shadow: 0 8px 18px -6px #6b5cdf55;
         }
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: scale(1.02);
             background: #9b8eff;
             box-shadow: 0 12px 24px -8px #6b5cdf99;
@@ -200,7 +199,7 @@
             margin-top: 1.8rem;
         }
 
-        /* إحصائيات سريعة */
+        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -226,7 +225,7 @@
         }
         .stat-item.purple .num { color: #b8abff; }
 
-        /* جداول البيانات */
+        /* Tables */
         .table-responsive {
             overflow-x: auto;
             margin-top: 0.8rem;
@@ -264,14 +263,6 @@
             font-size: 1.2rem;
             width: 1.8rem;
         }
-        .tag {
-            background: #2f3651;
-            padding: 0.15rem 0.9rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            color: #bcc6e5;
-            margin-right: 8px;
-        }
 
         .empty-state {
             text-align: center;
@@ -284,7 +275,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* قسم الملفات المعالجة */
         .file-info {
             background: #101624;
             border-radius: 18px;
@@ -310,7 +300,6 @@
             font-size: 0.85rem;
         }
 
-        /* التذيير */
         .footer {
             margin-top: 3rem;
             text-align: center;
@@ -325,7 +314,6 @@
             text-decoration: none;
         }
 
-        /* تحسينات للشاشات الصغيرة */
         @media (max-width: 650px) {
             body { padding: 1rem 0.8rem; }
             .card { padding: 1.5rem 1rem; }
@@ -336,7 +324,7 @@
 </head>
 <body>
 <div class="container" id="app">
-    <!-- الهوية البصرية -->
+    <!-- Brand -->
     <div class="brand">
         <div class="logo">
             <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
@@ -347,7 +335,7 @@
         </div>
     </div>
 
-    <!-- بطاقة رفع الملف -->
+    <!-- Upload Card -->
     <div class="card">
         <div class="card-header">
             <i class="fas fa-upload"></i>
@@ -365,11 +353,10 @@
             <button class="btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> إعادة تعيين</button>
             <span id="fileCount" style="margin-right:auto; color:#6a7294; font-size:0.9rem;"></span>
         </div>
-        <!-- عرض معلومات الملفات المرفوعة -->
         <div id="fileListContainer" style="margin-top: 1.2rem;"></div>
     </div>
 
-    <!-- بطاقة الإحصائيات العامة -->
+    <!-- Stats -->
     <div class="card" id="statsCard" style="display: none;">
         <div class="card-header">
             <i class="fas fa-th-large"></i>
@@ -384,8 +371,7 @@
         </div>
     </div>
 
-    <!-- بطاقات الجداول (4 جداول) -->
-    <!-- 1. من يتابعني ولا أتابعه -->
+    <!-- Tables -->
     <div class="card" id="table1Card" style="display: none;">
         <div class="card-header">
             <i class="fas fa-user-plus"></i>
@@ -395,7 +381,6 @@
         <div class="table-responsive" id="table1Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
     </div>
 
-    <!-- 2. أتابعه ولا يتابعني -->
     <div class="card" id="table2Card" style="display: none;">
         <div class="card-header">
             <i class="fas fa-user-minus"></i>
@@ -405,7 +390,6 @@
         <div class="table-responsive" id="table2Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
     </div>
 
-    <!-- 3. متابعين جدد (منذ آخر تحليل) - سيتم محاكاتها -->
     <div class="card" id="table3Card" style="display: none;">
         <div class="card-header">
             <i class="fas fa-user-clock"></i>
@@ -415,7 +399,6 @@
         <div class="table-responsive" id="table3Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div></div>
     </div>
 
-    <!-- 4. من ألغى المتابعة (تقديري) -->
     <div class="card" id="table4Card" style="display: none;">
         <div class="card-header">
             <i class="fas fa-user-slash"></i>
@@ -434,7 +417,7 @@
     (function() {
         "use strict";
 
-        // عناصر واجهة المستخدم
+        // DOM elements
         const fileInput = document.getElementById('fileInput');
         const uploadZone = document.getElementById('uploadZone');
         const analyzeBtn = document.getElementById('analyzeBtn');
@@ -442,14 +425,12 @@
         const fileCountSpan = document.getElementById('fileCount');
         const fileListContainer = document.getElementById('fileListContainer');
 
-        // عناصر الإحصائيات
         const statsCard = document.getElementById('statsCard');
         const followersCount = document.getElementById('followersCount');
         const followingCount = document.getElementById('followingCount');
         const notFollowBackCount = document.getElementById('notFollowBackCount');
         const notFollowingCount = document.getElementById('notFollowingCount');
 
-        // جداول
         const table1Card = document.getElementById('table1Card');
         const table2Card = document.getElementById('table2Card');
         const table3Card = document.getElementById('table3Card');
@@ -465,17 +446,15 @@
         const table3Container = document.getElementById('table3Container');
         const table4Container = document.getElementById('table4Container');
 
-        // حالة التخزين
-        let storedFiles = []; // { name, content, type: 'followers'|'following' }
-        let currentFollowers = new Set();
-        let currentFollowing = new Set();
+        // State
+        let storedFiles = []; // { name, content, type }
+        let fileReadCount = 0; // to track when all files are read
 
-        // ----- مساعدات -----
+        // ----- Helpers -----
         function extractUsernamesFromFollowers(content) {
             const set = new Set();
             try {
                 const data = JSON.parse(content);
-                // هيكل متابعين إنستغرام: قائمة objects بداخل "relationships_followers"
                 let list = [];
                 if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
                     list = data.relationships_followers;
@@ -495,7 +474,7 @@
                         set.add(item.value.trim());
                     }
                 }
-            } catch (e) { console.warn('خطأ في قراءة ملف المتابعين', e); }
+            } catch (e) { console.warn('Error reading followers file', e); }
             return set;
         }
 
@@ -522,12 +501,11 @@
                         set.add(item.value.trim());
                     }
                 }
-            } catch (e) { console.warn('خطأ في قراءة ملف المتابَعين', e); }
+            } catch (e) { console.warn('Error reading following file', e); }
             return set;
         }
 
-        // ----- عرض الجداول -----
-        function renderTable(container, usernamesSet, title = '') {
+        function renderTable(container, usernamesSet) {
             if (!usernamesSet || usernamesSet.size === 0) {
                 container.innerHTML = `<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا توجد بيانات</p></div>`;
                 return;
@@ -543,61 +521,55 @@
             container.innerHTML = html;
         }
 
-        // ----- التحليل الرئيسي -----
+        // ----- Main Analysis -----
         function performAnalysis() {
-            // reset previous
-            currentFollowers = new Set();
-            currentFollowing = new Set();
+            if (storedFiles.length === 0) {
+                alert('الرجاء رفع ملفات JSON أولاً.');
+                return;
+            }
 
-            let hasFollowers = false, hasFollowing = false;
+            let currentFollowers = new Set();
+            let currentFollowing = new Set();
 
             for (let file of storedFiles) {
                 if (file.type === 'followers') {
                     const set = extractUsernamesFromFollowers(file.content);
                     for (let u of set) currentFollowers.add(u);
-                    hasFollowers = true;
                 } else if (file.type === 'following') {
                     const set = extractUsernamesFromFollowing(file.content);
                     for (let u of set) currentFollowing.add(u);
-                    hasFollowing = true;
                 }
             }
 
-            // إذا لم يتم التعرف على نوع الملفات، نحاول تخمينها
-            if (!hasFollowers && !hasFollowing && storedFiles.length > 0) {
-                // محاولة تخمين: نفحص المحتوى
+            // If types not detected, try to guess from content
+            if (currentFollowers.size === 0 && currentFollowing.size === 0) {
                 for (let file of storedFiles) {
                     try {
                         const data = JSON.parse(file.content);
                         if (data.relationships_followers || data.followers) {
                             const set = extractUsernamesFromFollowers(file.content);
                             for (let u of set) currentFollowers.add(u);
-                            hasFollowers = true;
                         } else if (data.relationships_following || data.following) {
                             const set = extractUsernamesFromFollowing(file.content);
                             for (let u of set) currentFollowing.add(u);
-                            hasFollowing = true;
                         }
                     } catch(e) {}
                 }
             }
 
-            // إذا كان لدينا متابعين فقط أو متبوعين فقط نتعامل
             if (currentFollowers.size === 0 && currentFollowing.size === 0) {
                 alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة. تأكد من رفع الملفات الصحيحة.');
                 return;
             }
 
-            // تحديث الإحصائيات
+            // Update stats
             followersCount.innerText = currentFollowers.size;
             followingCount.innerText = currentFollowing.size;
 
-            // حساب: يتابعني ولا أتابعه (في followers وليس في following)
             const notFollowingMe = new Set();
             for (let f of currentFollowers) {
                 if (!currentFollowing.has(f)) notFollowingMe.add(f);
             }
-            // حساب: أتابعه ولا يتابعني (في following وليس في followers)
             const notFollowBack = new Set();
             for (let f of currentFollowing) {
                 if (!currentFollowers.has(f)) notFollowBack.add(f);
@@ -606,23 +578,19 @@
             notFollowBackCount.innerText = notFollowBack.size;
             notFollowingCount.innerText = notFollowingMe.size;
 
-            // عرض الجداول الأساسية
             count1.innerText = notFollowingMe.size;
             count2.innerText = notFollowBack.size;
             renderTable(table1Container, notFollowingMe);
             renderTable(table2Container, notFollowBack);
 
-            // جدول 3 و 4: متابعين جدد / ألغى المتابعة (تعتمد على المقارنة مع بيانات سابقة مخزنة)
-            // نستخدم localStorage لتخزين جلسات سابقة (مجرد محاكاة)
-            const previousFollowers = localStorage.getItem('theraStat_prevFollowers');
-            const previousFollowing = localStorage.getItem('theraStat_prevFollowing');
-
+            // Track changes using localStorage
+            const prevFollowers = localStorage.getItem('theraStat_prevFollowers');
             const newFollowers = new Set();
             const unfollowers = new Set();
 
-            if (previousFollowers) {
+            if (prevFollowers) {
                 try {
-                    const prevSet = new Set(JSON.parse(previousFollowers));
+                    const prevSet = new Set(JSON.parse(prevFollowers));
                     for (let f of currentFollowers) {
                         if (!prevSet.has(f)) newFollowers.add(f);
                     }
@@ -630,12 +598,8 @@
                         if (!currentFollowers.has(f)) unfollowers.add(f);
                     }
                 } catch(e) {}
-            } else {
-                // أول تحليل: نعتبر الكل جدد (أو لا نعرض)
-                // نتركها فارغة مع رسالة
             }
 
-            // تخزين البيانات الحالية للمقارنة القادمة
             localStorage.setItem('theraStat_prevFollowers', JSON.stringify(Array.from(currentFollowers)));
             localStorage.setItem('theraStat_prevFollowing', JSON.stringify(Array.from(currentFollowing)));
 
@@ -644,7 +608,6 @@
             renderTable(table3Container, newFollowers);
             renderTable(table4Container, unfollowers);
 
-            // إظهار البطاقات
             statsCard.style.display = 'block';
             table1Card.style.display = 'block';
             table2Card.style.display = 'block';
@@ -652,34 +615,47 @@
             table4Card.style.display = 'block';
         }
 
-        // ----- إدارة الملفات المرفوعة -----
+        // ----- File Handling -----
         function handleFiles(files) {
+            if (!files || files.length === 0) return;
+            
             storedFiles = [];
-            const fileNames = [];
+            fileReadCount = 0;
+            const totalFiles = files.length;
+
             for (let file of files) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const content = e.target.result;
                     let type = 'unknown';
                     const name = file.name.toLowerCase();
+                    
+                    // Detect type by filename
                     if (name.includes('follower') || name.includes('followers')) type = 'followers';
                     else if (name.includes('following')) type = 'following';
-                    else {
-                        // محاولة تخمين من المحتوى
+                    
+                    // If still unknown, try to detect from content
+                    if (type === 'unknown') {
                         try {
                             const data = JSON.parse(content);
                             if (data.relationships_followers || data.followers) type = 'followers';
                             else if (data.relationships_following || data.following) type = 'following';
                         } catch(ex) {}
                     }
+                    
                     storedFiles.push({ name: file.name, content, type });
-                    fileNames.push(file.name);
-                    // تحديث واجهة الملفات
-                    updateFileList();
-                    if (storedFiles.length === files.length) {
+                    fileReadCount++;
+                    
+                    // Update UI when all files are read
+                    if (fileReadCount === totalFiles) {
+                        updateFileList();
                         analyzeBtn.disabled = false;
                         fileCountSpan.innerText = `📂 ${storedFiles.length} ملف(ات)`;
                     }
+                };
+                reader.onerror = function() {
+                    alert('حدث خطأ أثناء قراءة الملف: ' + file.name);
+                    fileReadCount++;
                 };
                 reader.readAsText(file);
             }
@@ -699,43 +675,24 @@
             fileListContainer.innerHTML = html;
         }
 
-        // ----- أحداث -----
+        // ----- Event Listeners -----
         uploadZone.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', function(e) {
             if (this.files.length > 0) {
                 handleFiles(this.files);
             }
-            this.value = ''; // لإعادة الاختيار
+            this.value = ''; // Reset so same file can be re-uploaded
         });
 
-        analyzeBtn.addEventListener('click', performAnalysis);
-
-        resetBtn.addEventListener('click', function() {
-            storedFiles = [];
-            currentFollowers = new Set();
-            currentFollowing = new Set();
-            fileInput.value = '';
-            fileListContainer.innerHTML = '';
-            fileCountSpan.innerText = '';
-            analyzeBtn.disabled = true;
-            statsCard.style.display = 'none';
-            table1Card.style.display = 'none';
-            table2Card.style.display = 'none';
-            table3Card.style.display = 'none';
-            table4Card.style.display = 'none';
-            localStorage.removeItem('theraStat_prevFollowers');
-            localStorage.removeItem('theraStat_prevFollowing');
-            // إعادة تعيين الجداول
-            table1Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
-            table2Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
-            table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
-            table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
+        // Drag and drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#b8abff';
         });
-
-        // السحب والإفلات (تحسين)
-        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = '#b8abff'; });
-        uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = '#3d4460'; });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = '#3d4460';
+        });
         uploadZone.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadZone.style.borderColor = '#3d4460';
@@ -744,7 +701,31 @@
             }
         });
 
-        // تحميل أولي: رسالة ترحيب
+        analyzeBtn.addEventListener('click', performAnalysis);
+
+        resetBtn.addEventListener('click', function() {
+            storedFiles = [];
+            fileReadCount = 0;
+            fileInput.value = '';
+            fileListContainer.innerHTML = '';
+            fileCountSpan.innerText = '';
+            analyzeBtn.disabled = true;
+            
+            statsCard.style.display = 'none';
+            table1Card.style.display = 'none';
+            table2Card.style.display = 'none';
+            table3Card.style.display = 'none';
+            table4Card.style.display = 'none';
+            
+            localStorage.removeItem('theraStat_prevFollowers');
+            localStorage.removeItem('theraStat_prevFollowing');
+            
+            table1Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+            table2Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+            table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
+            table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
+        });
+
         console.log('TheraStat جاهز!');
     })();
 </script>
