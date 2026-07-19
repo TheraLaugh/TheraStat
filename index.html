@@ -4,16 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>TheraStat | تحليل إحصائيات إنستغرام</title>
-    <!-- Font & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
             background: #0b0d15;
@@ -25,12 +19,7 @@
             padding: 2rem 1.5rem 4rem;
             background-image: radial-gradient(circle at 20% 30%, #1a1f2e 0%, #0b0d15 90%);
         }
-
-        .container {
-            max-width: 1100px;
-            width: 100%;
-        }
-
+        .container { max-width: 1100px; width: 100%; }
         .brand {
             display: flex;
             align-items: center;
@@ -40,7 +29,6 @@
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(255, 255, 255, 0.06);
         }
-
         .logo h1 {
             font-size: 2.4rem;
             font-weight: 800;
@@ -58,7 +46,6 @@
             background: none;
             display: block;
         }
-
         .badge {
             background: rgba(138, 124, 255, 0.15);
             padding: 0.5rem 1.2rem;
@@ -68,10 +55,7 @@
             color: #c4b5ff;
             backdrop-filter: blur(4px);
         }
-        .badge i {
-            margin-left: 8px;
-        }
-
+        .badge i { margin-left: 8px; }
         .card {
             background: rgba(22, 27, 40, 0.7);
             backdrop-filter: blur(12px);
@@ -81,9 +65,7 @@
             padding: 2rem 1.8rem;
             margin-bottom: 2rem;
             box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
-            transition: transform 0.2s ease;
         }
-
         .card-header {
             display: flex;
             align-items: center;
@@ -91,17 +73,8 @@
             margin-bottom: 1.8rem;
             flex-wrap: wrap;
         }
-        .card-header i {
-            font-size: 1.8rem;
-            color: #8a7cff;
-            width: 2.2rem;
-            text-align: center;
-        }
-        .card-header h2 {
-            font-weight: 700;
-            font-size: 1.6rem;
-            color: #f0f4fa;
-        }
+        .card-header i { font-size: 1.8rem; color: #8a7cff; width: 2.2rem; text-align: center; }
+        .card-header h2 { font-weight: 700; font-size: 1.6rem; color: #f0f4fa; }
         .card-header .sub {
             margin-right: auto;
             font-size: 0.9rem;
@@ -110,7 +83,6 @@
             padding: 0.2rem 1rem;
             border-radius: 40px;
         }
-
         .upload-zone {
             border: 2px dashed #3d4460;
             border-radius: 24px;
@@ -120,28 +92,11 @@
             cursor: pointer;
             background: rgba(0, 0, 0, 0.2);
         }
-        .upload-zone:hover {
-            border-color: #8a7cff;
-            background: rgba(138, 124, 255, 0.04);
-        }
-        .upload-zone i {
-            font-size: 3.2rem;
-            color: #8a7cff;
-            margin-bottom: 0.5rem;
-        }
-        .upload-zone p {
-            color: #b0b9d6;
-            font-weight: 600;
-        }
-        .upload-zone .hint {
-            font-size: 0.85rem;
-            color: #6a7294;
-            margin-top: 8px;
-        }
-        #fileInput {
-            display: none;
-        }
-
+        .upload-zone:hover { border-color: #8a7cff; background: rgba(138, 124, 255, 0.04); }
+        .upload-zone i { font-size: 3.2rem; color: #8a7cff; margin-bottom: 0.5rem; }
+        .upload-zone p { color: #b0b9d6; font-weight: 600; }
+        .upload-zone .hint { font-size: 0.85rem; color: #6a7294; margin-top: 8px; }
+        #fileInput { display: none; }
         .btn-primary {
             background: linear-gradient(135deg, #8a7cff, #6b5cdf);
             border: none;
@@ -158,18 +113,8 @@
             border: 1px solid #9b8eff55;
             box-shadow: 0 8px 18px -6px #6b5cdf55;
         }
-        .btn-primary:hover:not(:disabled) {
-            transform: scale(1.02);
-            background: #9b8eff;
-            box-shadow: 0 12px 24px -8px #6b5cdf99;
-        }
-        .btn-primary:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
+        .btn-primary:hover:not(:disabled) { transform: scale(1.02); background: #9b8eff; box-shadow: 0 12px 24px -8px #6b5cdf99; }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
         .btn-outline {
             background: transparent;
             border: 1.5px solid #4a5272;
@@ -181,12 +126,7 @@
             transition: 0.15s;
             font-size: 0.9rem;
         }
-        .btn-outline:hover {
-            border-color: #8a7cff;
-            color: #fff;
-            background: #2a2f46;
-        }
-
+        .btn-outline:hover { border-color: #8a7cff; color: #fff; background: #2a2f46; }
         .flex-row {
             display: flex;
             flex-wrap: wrap;
@@ -194,7 +134,6 @@
             align-items: center;
             margin-top: 1.8rem;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -208,18 +147,9 @@
             text-align: center;
             border: 1px solid #2b3147;
         }
-        .stat-item .num {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #f0f4fa;
-            direction: ltr;
-        }
-        .stat-item .label {
-            font-size: 0.8rem;
-            color: #8892b0;
-        }
+        .stat-item .num { font-size: 2rem; font-weight: 800; color: #f0f4fa; direction: ltr; }
+        .stat-item .label { font-size: 0.8rem; color: #8892b0; }
         .stat-item.purple .num { color: #b8abff; }
-
         .table-responsive {
             overflow-x: auto;
             margin-top: 0.8rem;
@@ -252,11 +182,7 @@
             align-items: center;
             gap: 10px;
         }
-        .username-cell i {
-            color: #8a7cff;
-            font-size: 1.2rem;
-            width: 1.8rem;
-        }
+        .username-cell i { color: #8a7cff; font-size: 1.2rem; width: 1.8rem; }
         .instagram-link {
             color: #d6def0;
             text-decoration: none;
@@ -265,30 +191,20 @@
             align-items: center;
             gap: 8px;
         }
-        .instagram-link:hover {
-            color: #8a7cff;
-        }
+        .instagram-link:hover { color: #8a7cff; }
         .instagram-link i {
             font-size: 1.4rem;
             color: #E4405F;
             transition: transform 0.2s;
             width: auto;
         }
-        .instagram-link:hover i {
-            transform: scale(1.15);
-        }
-
+        .instagram-link:hover i { transform: scale(1.15); }
         .empty-state {
             text-align: center;
             padding: 2.5rem 0.5rem;
             color: #6a7294;
         }
-        .empty-state i {
-            font-size: 2.8rem;
-            color: #3d4460;
-            margin-bottom: 0.5rem;
-        }
-
+        .empty-state i { font-size: 2.8rem; color: #3d4460; margin-bottom: 0.5rem; }
         .file-info {
             background: #101624;
             border-radius: 18px;
@@ -300,20 +216,9 @@
             margin-bottom: 1.2rem;
             border-right: 4px solid #8a7cff;
         }
-        .file-info i {
-            color: #8a7cff;
-            font-size: 1.4rem;
-        }
-        .file-info .fname {
-            font-weight: 600;
-            color: #d6def0;
-            word-break: break-all;
-        }
-        .file-info .fsize {
-            color: #6a7294;
-            font-size: 0.85rem;
-        }
-
+        .file-info i { color: #8a7cff; font-size: 1.4rem; }
+        .file-info .fname { font-weight: 600; color: #d6def0; word-break: break-all; }
+        .file-info .fsize { color: #6a7294; font-size: 0.85rem; }
         .footer {
             margin-top: 3rem;
             text-align: center;
@@ -323,11 +228,7 @@
             padding-top: 2rem;
             width: 100%;
         }
-        .footer a {
-            color: #8a7cff;
-            text-decoration: none;
-        }
-
+        .footer a { color: #8a7cff; text-decoration: none; }
         @media (max-width: 650px) {
             body { padding: 1rem 0.8rem; }
             .card { padding: 1.5rem 1rem; }
@@ -343,9 +244,7 @@
             <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
             <span>تحليل متقدم لبيانات إنستغرام</span>
         </div>
-        <div class="badge">
-            <i class="fas fa-shield-alt"></i> معالجة محلية 100%
-        </div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> معالجة محلية 100%</div>
     </div>
 
     <div class="card">
@@ -427,7 +326,6 @@
     (function() {
         "use strict";
 
-        // DOM elements
         const fileInput = document.getElementById('fileInput');
         const uploadZone = document.getElementById('uploadZone');
         const analyzeBtn = document.getElementById('analyzeBtn');
@@ -456,74 +354,109 @@
         const table3Container = document.getElementById('table3Container');
         const table4Container = document.getElementById('table4Container');
 
-        // State
         let storedFiles = [];
 
-        // ----- Core Extraction Functions -----
+        // ----- استخراج الأسماء من ملف المتابعين -----
         function extractUsernamesFromFollowers(content) {
             const set = new Set();
             try {
                 const data = JSON.parse(content);
-                let list = [];
-                if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
-                    list = data.relationships_followers;
-                } else if (Array.isArray(data)) {
-                    list = data;
-                } else if (data.followers && Array.isArray(data.followers)) {
-                    list = data.followers;
-                } else if (data.data && Array.isArray(data.data)) {
-                    list = data.data;
+                
+                // Case 1: Direct array with string_list_data (your followers file)
+                if (Array.isArray(data)) {
+                    for (let item of data) {
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
+                        }
+                    }
+                    return set;
                 }
                 
-                for (let item of list) {
-                    if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                        for (let sub of item.string_list_data) {
-                            if (sub.value) set.add(sub.value.trim());
+                // Case 2: relationships_followers
+                if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
+                    for (let item of data.relationships_followers) {
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
                         }
-                    } else if (item.username) {
-                        set.add(item.username.trim());
-                    } else if (item.value) {
-                        set.add(item.value.trim());
-                    } else if (item.href) {
-                        const match = item.href.match(/https:\/\/www\.instagram\.com\/([^\/]+)/);
-                        if (match) set.add(match[1]);
                     }
+                    return set;
                 }
+                
+                // Case 3: followers key
+                if (data.followers && Array.isArray(data.followers)) {
+                    for (let item of data.followers) {
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
+                        }
+                    }
+                    return set;
+                }
+                
             } catch (e) { 
                 console.warn('Error reading followers file:', e); 
             }
             return set;
         }
 
+        // ----- استخراج الأسماء من ملف المتابَعين (المُصحح) -----
         function extractUsernamesFromFollowing(content) {
             const set = new Set();
             try {
                 const data = JSON.parse(content);
-                let list = [];
+                
+                // Case 1: relationships_following (your following file)
                 if (data.relationships_following && Array.isArray(data.relationships_following)) {
-                    list = data.relationships_following;
-                } else if (Array.isArray(data)) {
-                    list = data;
-                } else if (data.following && Array.isArray(data.following)) {
-                    list = data.following;
-                } else if (data.data && Array.isArray(data.data)) {
-                    list = data.data;
+                    for (let item of data.relationships_following) {
+                        // Extract from 'title' field (used in your file)
+                        if (item.title) {
+                            set.add(item.title.trim());
+                        }
+                        // Also check string_list_data as fallback
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
+                        }
+                    }
+                    return set;
                 }
                 
-                for (let item of list) {
-                    if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                        for (let sub of item.string_list_data) {
-                            if (sub.value) set.add(sub.value.trim());
+                // Case 2: Direct array
+                if (Array.isArray(data)) {
+                    for (let item of data) {
+                        if (item.title) {
+                            set.add(item.title.trim());
                         }
-                    } else if (item.username) {
-                        set.add(item.username.trim());
-                    } else if (item.value) {
-                        set.add(item.value.trim());
-                    } else if (item.href) {
-                        const match = item.href.match(/https:\/\/www\.instagram\.com\/([^\/]+)/);
-                        if (match) set.add(match[1]);
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
+                        }
                     }
+                    return set;
                 }
+                
+                // Case 3: following key
+                if (data.following && Array.isArray(data.following)) {
+                    for (let item of data.following) {
+                        if (item.title) {
+                            set.add(item.title.trim());
+                        }
+                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                            for (let sub of item.string_list_data) {
+                                if (sub.value) set.add(sub.value.trim());
+                            }
+                        }
+                    }
+                    return set;
+                }
+                
             } catch (e) { 
                 console.warn('Error reading following file:', e); 
             }
@@ -559,7 +492,7 @@
             container.innerHTML = html;
         }
 
-        // ----- Main Analysis -----
+        // ----- التحليل الرئيسي -----
         function performAnalysis() {
             if (storedFiles.length === 0) {
                 alert('الرجاء رفع ملفات JSON أولاً.');
@@ -569,7 +502,6 @@
             let followers = new Set();
             let following = new Set();
 
-            // Process each file
             for (let file of storedFiles) {
                 if (file.type === 'followers') {
                     const set = extractUsernamesFromFollowers(file.content);
@@ -580,25 +512,34 @@
                 }
             }
 
-            // If types not detected, try to guess from content
+            // If types not detected, try to guess
             if (followers.size === 0 && following.size === 0) {
                 for (let file of storedFiles) {
                     try {
                         const data = JSON.parse(file.content);
-                        if (data.relationships_followers || data.followers || 
-                            (Array.isArray(data) && data.length > 0 && data[0].string_list_data)) {
-                            const set = extractUsernamesFromFollowers(file.content);
-                            for (let u of set) followers.add(u);
-                        } else if (data.relationships_following || data.following) {
+                        // Check for following structure (has relationships_following with title)
+                        if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
                             const set = extractUsernamesFromFollowing(file.content);
                             for (let u of set) following.add(u);
+                        }
+                        // Check for followers structure (direct array with string_list_data)
+                        else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
+                            const set = extractUsernamesFromFollowers(file.content);
+                            for (let u of set) followers.add(u);
+                        }
+                        // Check for relationships_followers
+                        else if (data.relationships_followers) {
+                            const set = extractUsernamesFromFollowers(file.content);
+                            for (let u of set) followers.add(u);
                         }
                     } catch(e) {}
                 }
             }
 
-            console.log('Followers found:', followers.size);
-            console.log('Following found:', following.size);
+            console.log('📊 Total Followers found:', followers.size);
+            console.log('📊 Total Following found:', following.size);
+            console.log('📝 Sample followers:', Array.from(followers).slice(0, 5));
+            console.log('📝 Sample following:', Array.from(following).slice(0, 5));
 
             if (followers.size === 0 && following.size === 0) {
                 alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة. تأكد من رفع الملفات الصحيحة من إنستغرام.');
@@ -629,10 +570,8 @@
             renderTable(table1Container, notFollowingMe);
             renderTable(table2Container, notFollowBack);
 
-            // Track changes using localStorage
+            // Track changes
             const prevFollowers = localStorage.getItem('theraStat_prevFollowers');
-            const prevFollowing = localStorage.getItem('theraStat_prevFollowing');
-            
             const newFollowers = new Set();
             const unfollowers = new Set();
 
@@ -645,12 +584,9 @@
                     for (let f of prevSet) {
                         if (!followers.has(f)) unfollowers.add(f);
                     }
-                } catch(e) {
-                    console.warn('Error parsing previous data:', e);
-                }
+                } catch(e) {}
             }
 
-            // Store current data for future comparison
             localStorage.setItem('theraStat_prevFollowers', JSON.stringify(Array.from(followers)));
             localStorage.setItem('theraStat_prevFollowing', JSON.stringify(Array.from(following)));
 
@@ -659,7 +595,6 @@
             renderTable(table3Container, newFollowers);
             renderTable(table4Container, unfollowers);
 
-            // Show all cards
             statsCard.style.display = 'block';
             table1Card.style.display = 'block';
             table2Card.style.display = 'block';
@@ -667,7 +602,7 @@
             table4Card.style.display = 'block';
         }
 
-        // ----- File Handling -----
+        // ----- معالجة الملفات -----
         function handleFiles(files) {
             if (!files || files.length === 0) return;
             
@@ -689,11 +624,12 @@
                     } else {
                         try {
                             const data = JSON.parse(content);
-                            if (data.relationships_followers || data.followers || 
-                                (Array.isArray(data) && data.length > 0 && data[0].string_list_data)) {
-                                type = 'followers';
-                            } else if (data.relationships_following || data.following) {
+                            if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
                                 type = 'following';
+                            } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
+                                type = 'followers';
+                            } else if (data.relationships_followers || data.followers) {
+                                type = 'followers';
                             }
                         } catch(ex) {}
                     }
@@ -729,7 +665,7 @@
             fileListContainer.innerHTML = html;
         }
 
-        // ----- Event Listeners -----
+        // ----- الأحداث -----
         uploadZone.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', function(e) {
