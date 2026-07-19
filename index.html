@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* نفس الأنماط السابقة، اختصرتها هنا للاختصار، ولكن يمكنك استخدام نفس الأنماط السابقة */
+        /* نفس الأنماط السابقة مع تعديلات بسيطة */
         * {
             margin: 0;
             padding: 0;
@@ -412,6 +412,26 @@
             background: #3d4460;
             border-radius: 10px;
         }
+        .debug-box {
+            background: #1a1f2e;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #8ab4ff;
+            border: 1px solid #2f3651;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .debug-box .label {
+            color: #8892b0;
+        }
+        .debug-box .value {
+            color: #4ade80;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -436,7 +456,7 @@
                 <div class="upload-zone" id="uploadZone">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <p>انقر لاختيار ملف <strong>followers_1.json</strong> أو <strong>following.json</strong></p>
-                    <div class="hint">يمكنك رفع عدة ملفات معاً (حتى 4 ملفات متابعين للمقارنة التاريخية)</div>
+                    <div class="hint">ارفع كلا الملفين معاً</div>
                     <input type="file" id="fileInput" accept=".json" multiple>
                 </div>
                 <div class="flex-row">
@@ -445,10 +465,11 @@
                     <span id="fileCount" style="margin-right:auto; color:#6a7294; font-size:0.9rem;"></span>
                 </div>
                 <div id="fileListContainer" style="margin-top: 1.2rem;"></div>
+                <div class="debug-box" id="debugBox"></div>
             </div>
         </div>
 
-        <!-- Stats (always open) -->
+        <!-- Stats -->
         <div class="card" id="statsCard" style="display: none;">
             <div class="card-header" onclick="toggleSection('statsBody')">
                 <i class="fas fa-th-large"></i>
@@ -544,6 +565,7 @@
             const resetBtn = document.getElementById('resetBtn');
             const fileCountSpan = document.getElementById('fileCount');
             const fileListContainer = document.getElementById('fileListContainer');
+            const debugBox = document.getElementById('debugBox');
 
             const statsCard = document.getElementById('statsCard');
             const followersCount = document.getElementById('followersCount');
@@ -583,12 +605,13 @@
                 }
             };
 
-            // ====== استخراج الأسماء من ملف المتابعين ======
-            function extractUsernamesFromFollowers(content) {
+            // ====== استخراج الأسماء ======
+            function extractNames(content) {
                 const set = new Set();
                 try {
                     const data = JSON.parse(content);
-                    // الحالة الأكثر شيوعاً: مصفوفة مباشرة مع string_list_data
+
+                    // حالة 1: مصفوفة مباشرة (مثل followers_1.json)
                     if (Array.isArray(data)) {
                         for (let item of data) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
@@ -599,46 +622,16 @@
                                     }
                                 }
                             }
-                        }
-                        return set;
-                    }
-                    // حالات أخرى للتوافق
-                    if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
-                        for (let item of data.relationships_followers) {
-                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                                for (let sub of item.string_list_data) {
-                                    if (sub.value) {
-                                        const name = sub.value.trim();
-                                        if (name) set.add(name);
-                                    }
-                                }
+                            // بعض ملفات following قد تكون مصفوفة مع title
+                            if (item.title) {
+                                const name = item.title.trim();
+                                if (name) set.add(name);
                             }
                         }
                         return set;
                     }
-                    if (data.followers && Array.isArray(data.followers)) {
-                        for (let item of data.followers) {
-                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                                for (let sub of item.string_list_data) {
-                                    if (sub.value) {
-                                        const name = sub.value.trim();
-                                        if (name) set.add(name);
-                                    }
-                                }
-                            }
-                        }
-                        return set;
-                    }
-                } catch (e) { console.warn('Error reading followers file:', e); }
-                return set;
-            }
 
-            // ====== استخراج الأسماء من ملف المتابَعين ======
-            function extractUsernamesFromFollowing(content) {
-                const set = new Set();
-                try {
-                    const data = JSON.parse(content);
-                    // الحالة الأكثر شيوعاً: relationships_following مع title
+                    // حالة 2: relationships_following (ملف following)
                     if (data.relationships_following && Array.isArray(data.relationships_following)) {
                         for (let item of data.relationships_following) {
                             if (item.title) {
@@ -656,13 +649,10 @@
                         }
                         return set;
                     }
-                    // حالات أخرى للتوافق
-                    if (Array.isArray(data)) {
-                        for (let item of data) {
-                            if (item.title) {
-                                const name = item.title.trim();
-                                if (name) set.add(name);
-                            }
+
+                    // حالة 3: followers (كائن مع followers)
+                    if (data.followers && Array.isArray(data.followers)) {
+                        for (let item of data.followers) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
                                     if (sub.value) {
@@ -674,12 +664,10 @@
                         }
                         return set;
                     }
-                    if (data.following && Array.isArray(data.following)) {
-                        for (let item of data.following) {
-                            if (item.title) {
-                                const name = item.title.trim();
-                                if (name) set.add(name);
-                            }
+
+                    // حالة 4: relationships_followers
+                    if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
+                        for (let item of data.relationships_followers) {
                             if (item.string_list_data && Array.isArray(item.string_list_data)) {
                                 for (let sub of item.string_list_data) {
                                     if (sub.value) {
@@ -691,7 +679,10 @@
                         }
                         return set;
                     }
-                } catch (e) { console.warn('Error reading following file:', e); }
+
+                } catch (e) {
+                    console.warn('Error extracting names:', e);
+                }
                 return set;
             }
 
@@ -726,12 +717,23 @@
                 container.innerHTML = html;
             }
 
+            // ====== دالة كتابة في صندوق التصحيح ======
+            function debug(msg) {
+                debugBox.style.display = 'block';
+                debugBox.innerHTML += msg + '<br>';
+                debugBox.scrollTop = debugBox.scrollHeight;
+            }
+
             // ====== التحليل الرئيسي ======
             function performAnalysis() {
                 if (storedFiles.length === 0) {
                     alert('الرجاء رفع ملفات JSON أولاً.');
                     return;
                 }
+
+                debugBox.innerHTML = '';
+                debugBox.style.display = 'block';
+                debug('🔍 بدء التحليل...');
 
                 // تصنيف الملفات
                 let followersFiles = [];
@@ -746,8 +748,7 @@
                         // محاولة التحديد من المحتوى
                         try {
                             const data = JSON.parse(file.content);
-                            if (data.relationships_following && Array.isArray(data.relationships_following) && data
-                                .relationships_following[0]?.title) {
+                            if (data.relationships_following && Array.isArray(data.relationships_following)) {
                                 followingFiles.push(file);
                             } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
                                 followersFiles.push(file);
@@ -758,58 +759,55 @@
                     }
                 }
 
-                console.log('📊 عدد ملفات المتابعين:', followersFiles.length);
-                console.log('📊 عدد ملفات المتابَعين:', followingFiles.length);
+                debug(`📁 ملفات المتابعين: ${followersFiles.length}`);
+                debug(`📁 ملفات المتابَعين: ${followingFiles.length}`);
 
-                // استخراج جميع المتابعين (دمج جميع ملفات المتابعين)
+                // استخراج جميع المتابعين
                 let allFollowers = new Set();
                 for (let file of followersFiles) {
-                    const set = extractUsernamesFromFollowers(file.content);
-                    console.log(`📝 استخراج من ${file.name}: ${set.size} اسم`);
-                    for (let u of set) allFollowers.add(u);
+                    const names = extractNames(file.content);
+                    debug(`📝 من ${file.name}: ${names.size} اسم`);
+                    for (let u of names) allFollowers.add(u);
                 }
 
-                // استخراج جميع المتابَعين (دمج جميع ملفات المتابَعين)
+                // استخراج جميع المتابَعين
                 let allFollowing = new Set();
                 for (let file of followingFiles) {
-                    const set = extractUsernamesFromFollowing(file.content);
-                    console.log(`📝 استخراج من ${file.name}: ${set.size} اسم`);
-                    for (let u of set) allFollowing.add(u);
+                    const names = extractNames(file.content);
+                    debug(`📝 من ${file.name}: ${names.size} اسم`);
+                    for (let u of names) allFollowing.add(u);
                 }
 
-                console.log('📊 إجمالي المتابعين:', allFollowers.size);
-                console.log('📊 إجمالي المتابَعين:', allFollowing.size);
-                console.log('📝 عينة من المتابعين:', Array.from(allFollowers).slice(0, 5));
-                console.log('📝 عينة من المتابَعين:', Array.from(allFollowing).slice(0, 5));
+                debug(`📊 إجمالي المتابعين: ${allFollowers.size}`);
+                debug(`📊 إجمالي المتابَعين: ${allFollowing.size}`);
 
                 if (allFollowers.size === 0 && allFollowing.size === 0) {
                     alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة.');
                     return;
                 }
 
-                // ===== المقارنات الأساسية (المنطق الصحيح) =====
-
-                // 1. يتابعني ويتابعه = موجود في كلا الملفين (تقاطع)
+                // ===== المقارنات =====
+                // 1. يتابعني ويتابعه = تقاطع
                 const mutual = new Set();
                 for (let f of allFollowers) {
                     if (allFollowing.has(f)) mutual.add(f);
                 }
 
-                // 2. يتابعني ولا أتابعه = موجود في followers فقط (not in following)
+                // 2. يتابعني ولا أتابعه = في followers فقط
                 const notFollowing = new Set();
                 for (let f of allFollowers) {
                     if (!allFollowing.has(f)) notFollowing.add(f);
                 }
 
-                // 3. أتابعه ولا يتابعني = موجود في following فقط (not in followers)
+                // 3. أتابعه ولا يتابعني = في following فقط
                 const notFollowBack = new Set();
                 for (let f of allFollowing) {
                     if (!allFollowers.has(f)) notFollowBack.add(f);
                 }
 
-                console.log('📊 يتابعني ويتابعه:', mutual.size);
-                console.log('📊 يتابعني ولا أتابعه:', notFollowing.size);
-                console.log('📊 أتابعه ولا يتابعني:', notFollowBack.size);
+                debug(`🟣 يتابعني ويتابعه: ${mutual.size}`);
+                debug(`🟢 يتابعني ولا أتابعه: ${notFollowing.size}`);
+                debug(`🔴 أتابعه ولا يتابعني: ${notFollowBack.size}`);
 
                 // تحديث الإحصائيات
                 followersCount.innerText = allFollowers.size;
@@ -824,32 +822,27 @@
                 renderTable(table1Container, notFollowing);
                 renderTable(table2Container, notFollowBack);
 
-                // ===== المقارنات التاريخية (المتابعين الجدد ومن ألغى المتابعة) =====
+                // ===== المقارنات التاريخية =====
                 let newFollowers = new Set();
                 let unfollowers = new Set();
 
                 if (followersFiles.length >= 2) {
-                    // نأخذ أول ملف وآخر ملف للمقارنة
                     const oldest = followersFiles[0];
                     const newest = followersFiles[followersFiles.length - 1];
 
-                    const oldSet = extractUsernamesFromFollowers(oldest.content);
-                    const newSet = extractUsernamesFromFollowers(newest.content);
+                    const oldSet = extractNames(oldest.content);
+                    const newSet = extractNames(newest.content);
 
-                    // متابعين جدد: موجودين في الجديد وليس في القديم
                     for (let f of newSet) {
                         if (!oldSet.has(f)) newFollowers.add(f);
                     }
-
-                    // ألغوا المتابعة: موجودين في القديم وليس في الجديد
                     for (let f of oldSet) {
                         if (!newSet.has(f)) unfollowers.add(f);
                     }
 
-                    console.log('📊 متابعين جدد:', newFollowers.size);
-                    console.log('📊 ألغوا المتابعة:', unfollowers.size);
+                    debug(`🔵 متابعين جدد: ${newFollowers.size}`);
+                    debug(`🟠 ألغوا المتابعة: ${unfollowers.size}`);
                 } else {
-                    // إذا كان هناك ملف واحد فقط، نعرض رسالة
                     table3Container.innerHTML =
                         `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
                     table4Container.innerHTML =
@@ -863,16 +856,17 @@
                 renderTable(table3Container, newFollowers);
                 renderTable(table4Container, unfollowers);
 
-                // فتح النظرة العامة فقط (الأقسام الأخرى تبقى مطوية)
+                // فتح النظرة العامة
                 document.getElementById('statsBody').classList.add('open');
                 document.getElementById('statsToggle').querySelector('i').className = 'fas fa-chevron-up';
 
-                // إظهار البطاقات
                 statsCard.style.display = 'block';
                 table1Card.style.display = 'block';
                 table2Card.style.display = 'block';
                 table3Card.style.display = 'block';
                 table4Card.style.display = 'block';
+
+                debug('✅ التحليل اكتمل!');
             }
 
             // ====== معالجة الملفات ======
@@ -897,8 +891,7 @@
                         } else {
                             try {
                                 const data = JSON.parse(content);
-                                if (data.relationships_following && Array.isArray(data.relationships_following) &&
-                                    data.relationships_following[0]?.title) {
+                                if (data.relationships_following) {
                                     type = 'following';
                                 } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
                                     type = 'followers';
@@ -976,6 +969,8 @@
                 fileListContainer.innerHTML = '';
                 fileCountSpan.innerText = '';
                 analyzeBtn.disabled = true;
+                debugBox.style.display = 'none';
+                debugBox.innerHTML = '';
 
                 statsCard.style.display = 'none';
                 table1Card.style.display = 'none';
