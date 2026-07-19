@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TheraStat | تحليل إحصائيات إنستغرام</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Cairo', sans-serif;
             background: #0b0d15;
@@ -19,7 +23,10 @@
             padding: 2rem 1.5rem 4rem;
             background-image: radial-gradient(circle at 20% 30%, #1a1f2e 0%, #0b0d15 90%);
         }
-        .container { max-width: 1100px; width: 100%; }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
         .brand {
             display: flex;
             align-items: center;
@@ -36,14 +43,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.5px;
         }
         .logo span {
             font-weight: 400;
             font-size: 0.9rem;
             color: #8892b0;
-            -webkit-text-fill-color: #8892b0;
-            background: none;
             display: block;
         }
         .badge {
@@ -55,11 +59,12 @@
             color: #c4b5ff;
             backdrop-filter: blur(4px);
         }
-        .badge i { margin-left: 8px; }
+        .badge i {
+            margin-left: 8px;
+        }
         .card {
             background: rgba(22, 27, 40, 0.7);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 28px;
             padding: 2rem 1.8rem;
@@ -70,15 +75,26 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 1.8rem;
             flex-wrap: wrap;
             cursor: pointer;
             user-select: none;
             transition: 0.2s;
+            margin-bottom: 0.5rem;
         }
-        .card-header:hover { opacity: 0.8; }
-        .card-header i { font-size: 1.8rem; color: #8a7cff; width: 2.2rem; text-align: center; }
-        .card-header h2 { font-weight: 700; font-size: 1.6rem; color: #f0f4fa; }
+        .card-header:hover {
+            opacity: 0.8;
+        }
+        .card-header i {
+            font-size: 1.8rem;
+            color: #8a7cff;
+            width: 2.2rem;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #f0f4fa;
+        }
         .card-header .sub {
             margin-right: auto;
             font-size: 0.9rem;
@@ -92,9 +108,16 @@
             color: #6a7294;
             transition: transform 0.3s;
         }
-        .card-header .toggle-icon.open { transform: rotate(180deg); }
-        .card-body { transition: max-height 0.4s ease, opacity 0.3s ease; overflow: hidden; max-height: 0; opacity: 0; }
-        .card-body.open { max-height: 5000px; opacity: 1; }
+        .card-body {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+        .card-body.open {
+            max-height: 5000px;
+            opacity: 1;
+        }
         .upload-zone {
             border: 2px dashed #3d4460;
             border-radius: 24px;
@@ -104,11 +127,27 @@
             cursor: pointer;
             background: rgba(0, 0, 0, 0.2);
         }
-        .upload-zone:hover { border-color: #8a7cff; background: rgba(138, 124, 255, 0.04); }
-        .upload-zone i { font-size: 3.2rem; color: #8a7cff; margin-bottom: 0.5rem; }
-        .upload-zone p { color: #b0b9d6; font-weight: 600; }
-        .upload-zone .hint { font-size: 0.85rem; color: #6a7294; margin-top: 8px; }
-        #fileInput { display: none; }
+        .upload-zone:hover {
+            border-color: #8a7cff;
+            background: rgba(138, 124, 255, 0.04);
+        }
+        .upload-zone i {
+            font-size: 3.2rem;
+            color: #8a7cff;
+            margin-bottom: 0.5rem;
+        }
+        .upload-zone p {
+            color: #b0b9d6;
+            font-weight: 600;
+        }
+        .upload-zone .hint {
+            font-size: 0.85rem;
+            color: #6a7294;
+            margin-top: 8px;
+        }
+        #fileInput {
+            display: none;
+        }
         .btn-primary {
             background: linear-gradient(135deg, #8a7cff, #6b5cdf);
             border: none;
@@ -125,8 +164,17 @@
             border: 1px solid #9b8eff55;
             box-shadow: 0 8px 18px -6px #6b5cdf55;
         }
-        .btn-primary:hover:not(:disabled) { transform: scale(1.02); background: #9b8eff; box-shadow: 0 12px 24px -8px #6b5cdf99; }
-        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.02);
+            background: #9b8eff;
+            box-shadow: 0 12px 24px -8px #6b5cdf99;
+        }
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
         .btn-outline {
             background: transparent;
             border: 1.5px solid #4a5272;
@@ -138,7 +186,11 @@
             transition: 0.15s;
             font-size: 0.9rem;
         }
-        .btn-outline:hover { border-color: #8a7cff; color: #fff; background: #2a2f46; }
+        .btn-outline:hover {
+            border-color: #8a7cff;
+            color: #fff;
+            background: #2a2f46;
+        }
         .flex-row {
             display: flex;
             flex-wrap: wrap;
@@ -158,17 +210,32 @@
             padding: 0.9rem 0.5rem;
             text-align: center;
             border: 1px solid #2b3147;
-            cursor: pointer;
-            transition: 0.2s;
         }
-        .stat-item:hover { border-color: #8a7cff; background: #1a2035; }
-        .stat-item .num { font-size: 2rem; font-weight: 800; color: #f0f4fa; direction: ltr; }
-        .stat-item .label { font-size: 0.8rem; color: #8892b0; }
-        .stat-item.purple .num { color: #b8abff; }
-        .stat-item.green .num { color: #4ade80; }
-        .stat-item.red .num { color: #f87171; }
-        .stat-item.blue .num { color: #60a5fa; }
-        .stat-item.orange .num { color: #fb923c; }
+        .stat-item .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f0f4fa;
+            direction: ltr;
+        }
+        .stat-item .label {
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+        .stat-item.purple .num {
+            color: #b8abff;
+        }
+        .stat-item.green .num {
+            color: #4ade80;
+        }
+        .stat-item.red .num {
+            color: #f87171;
+        }
+        .stat-item.blue .num {
+            color: #60a5fa;
+        }
+        .stat-item.orange .num {
+            color: #fb923c;
+        }
         .table-responsive {
             overflow-x: auto;
             margin-top: 0.8rem;
@@ -195,13 +262,19 @@
             border-bottom: 1px solid #222a3e;
             color: #d6def0;
         }
-        tr:last-child td { border-bottom: none; }
+        tr:last-child td {
+            border-bottom: none;
+        }
         .username-cell {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .username-cell i { color: #8a7cff; font-size: 1.2rem; width: 1.8rem; }
+        .username-cell i {
+            color: #8a7cff;
+            font-size: 1.2rem;
+            width: 1.8rem;
+        }
         .instagram-link {
             color: #d6def0;
             text-decoration: none;
@@ -210,20 +283,28 @@
             align-items: center;
             gap: 8px;
         }
-        .instagram-link:hover { color: #8a7cff; }
+        .instagram-link:hover {
+            color: #8a7cff;
+        }
         .instagram-link i {
             font-size: 1.4rem;
             color: #E4405F;
             transition: transform 0.2s;
             width: auto;
         }
-        .instagram-link:hover i { transform: scale(1.15); }
+        .instagram-link:hover i {
+            transform: scale(1.15);
+        }
         .empty-state {
             text-align: center;
             padding: 2.5rem 0.5rem;
             color: #6a7294;
         }
-        .empty-state i { font-size: 2.8rem; color: #3d4460; margin-bottom: 0.5rem; }
+        .empty-state i {
+            font-size: 2.8rem;
+            color: #3d4460;
+            margin-bottom: 0.5rem;
+        }
         .file-info {
             background: #101624;
             border-radius: 18px;
@@ -235,9 +316,63 @@
             margin-bottom: 1.2rem;
             border-right: 4px solid #8a7cff;
         }
-        .file-info i { color: #8a7cff; font-size: 1.4rem; }
-        .file-info .fname { font-weight: 600; color: #d6def0; word-break: break-all; }
-        .file-info .fsize { color: #6a7294; font-size: 0.85rem; }
+        .file-info i {
+            color: #8a7cff;
+            font-size: 1.4rem;
+        }
+        .file-info .fname {
+            font-weight: 600;
+            color: #d6def0;
+            word-break: break-all;
+        }
+        .file-type-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            background: #2a2f46;
+        }
+        .file-type-badge.followers {
+            background: #4a2f6b;
+            color: #c4b5ff;
+        }
+        .file-type-badge.following {
+            background: #2f4a6b;
+            color: #8ab4ff;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #8892b0;
+        }
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legend .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .legend .dot.green {
+            background: #4ade80;
+        }
+        .legend .dot.red {
+            background: #f87171;
+        }
+        .legend .dot.purple {
+            background: #b8abff;
+        }
+        .legend .dot.blue {
+            background: #60a5fa;
+        }
+        .legend .dot.orange {
+            background: #fb923c;
+        }
         .footer {
             margin-top: 3rem;
             text-align: center;
@@ -247,585 +382,589 @@
             padding-top: 2rem;
             width: 100%;
         }
-        .footer a { color: #8a7cff; text-decoration: none; }
-        .file-type-badge {
-            font-size: 0.75rem;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            background: #2a2f46;
+        .footer a {
+            color: #8a7cff;
+            text-decoration: none;
         }
-        .file-type-badge.followers { background: #4a2f6b; color: #c4b5ff; }
-        .file-type-badge.following { background: #2f4a6b; color: #8ab4ff; }
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 10px 0;
-            font-size: 0.85rem;
-            color: #8892b0;
-        }
-        .legend span { display: flex; align-items: center; gap: 6px; }
-        .legend .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .legend .dot.green { background: #4ade80; }
-        .legend .dot.red { background: #f87171; }
-        .legend .dot.purple { background: #b8abff; }
-        .legend .dot.blue { background: #60a5fa; }
-        .legend .dot.orange { background: #fb923c; }
         @media (max-width: 650px) {
-            body { padding: 1rem 0.8rem; }
-            .card { padding: 1.5rem 1rem; }
-            .logo h1 { font-size: 1.8rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            body {
+                padding: 1rem 0.8rem;
+            }
+            .card {
+                padding: 1.5rem 1rem;
+            }
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
-        .table-responsive::-webkit-scrollbar { height: 6px; }
-        .table-responsive::-webkit-scrollbar-track { background: #0e121f; border-radius: 10px; }
-        .table-responsive::-webkit-scrollbar-thumb { background: #3d4460; border-radius: 10px; }
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+        .table-responsive::-webkit-scrollbar-track {
+            background: #0e121f;
+            border-radius: 10px;
+        }
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #3d4460;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="brand">
-        <div class="logo">
-            <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
-            <span>تحليل متقدم لبيانات إنستغرام</span>
+    <div class="container">
+        <!-- Brand -->
+        <div class="brand">
+            <div class="logo">
+                <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
+                <span>تحليل متقدم لبيانات إنستغرام</span>
+            </div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> معالجة محلية 100%</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> معالجة محلية 100%</div>
-    </div>
 
-    <!-- رفع الملفات -->
-    <div class="card">
-        <div class="card-header" style="cursor:default;">
-            <i class="fas fa-upload"></i>
-            <h2>رفع ملفات البيانات</h2>
-            <span class="sub">JSON من إنستغرام</span>
-        </div>
-        <div class="card-body open" style="max-height: none; opacity:1;">
-            <div class="upload-zone" id="uploadZone">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>انقر لاختيار ملف <strong>followers_1.json</strong> أو <strong>following.json</strong></p>
-                <div class="hint">يمكنك رفع عدة ملفات معاً (حتى 4 ملفات متابعين للمقارنة التاريخية)</div>
-                <input type="file" id="fileInput" accept=".json" multiple>
+        <!-- Upload -->
+        <div class="card">
+            <div class="card-header" style="cursor:default;">
+                <i class="fas fa-upload"></i>
+                <h2>رفع ملفات البيانات</h2>
+                <span class="sub">JSON من إنستغرام</span>
             </div>
-            <div class="flex-row">
-                <button class="btn-primary" id="analyzeBtn" disabled><i class="fas fa-microchip"></i> تحليل البيانات</button>
-                <button class="btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> إعادة تعيين</button>
-                <span id="fileCount" style="margin-right:auto; color:#6a7294; font-size:0.9rem;"></span>
-            </div>
-            <div id="fileListContainer" style="margin-top: 1.2rem;"></div>
-        </div>
-    </div>
-
-    <!-- نظرة عامة -->
-    <div class="card" id="statsCard" style="display: none;">
-        <div class="card-header" onclick="toggleSection('statsBody')">
-            <i class="fas fa-th-large"></i>
-            <h2>نظرة عامة</h2>
-            <span class="sub">إحصائيات</span>
-            <span class="toggle-icon" id="statsToggle"><i class="fas fa-chevron-down"></i></span>
-        </div>
-        <div class="card-body open" id="statsBody">
-            <div class="legend">
-                <span><span class="dot purple"></span> يتابعني ويتابعه</span>
-                <span><span class="dot green"></span> يتابعني ولا أتابعه</span>
-                <span><span class="dot red"></span> أتابعه ولا يتابعني</span>
-                <span><span class="dot blue"></span> متابعين جدد</span>
-                <span><span class="dot orange"></span> ألغوا المتابعة</span>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-item"><div class="num" id="followersCount">0</div><div class="label">المتابعين</div></div>
-                <div class="stat-item"><div class="num" id="followingCount">0</div><div class="label">يتابعهم</div></div>
-                <div class="stat-item purple"><div class="num" id="mutualCount">0</div><div class="label">يتابعني ويتابعه</div></div>
-                <div class="stat-item green"><div class="num" id="notFollowingCount">0</div><div class="label">يتابعني ولا أتابعه</div></div>
-                <div class="stat-item red"><div class="num" id="notFollowBackCount">0</div><div class="label">أتابعه ولا يتابعني</div></div>
-                <div class="stat-item blue"><div class="num" id="newFollowersCount">0</div><div class="label">متابعين جدد</div></div>
-                <div class="stat-item orange"><div class="num" id="unfollowersCount">0</div><div class="label">ألغوا المتابعة</div></div>
+            <div class="card-body open" style="max-height: none; opacity:1;">
+                <div class="upload-zone" id="uploadZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>انقر لاختيار ملف <strong>followers_1.json</strong> أو <strong>following.json</strong></p>
+                    <div class="hint">يمكنك رفع عدة ملفات معاً (حتى 4 ملفات متابعين للمقارنة التاريخية)</div>
+                    <input type="file" id="fileInput" accept=".json" multiple>
+                </div>
+                <div class="flex-row">
+                    <button class="btn-primary" id="analyzeBtn" disabled><i class="fas fa-microchip"></i> تحليل البيانات</button>
+                    <button class="btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> إعادة تعيين</button>
+                    <span id="fileCount" style="margin-right:auto; color:#6a7294; font-size:0.9rem;"></span>
+                </div>
+                <div id="fileListContainer" style="margin-top: 1.2rem;"></div>
             </div>
         </div>
+
+        <!-- Stats (always open) -->
+        <div class="card" id="statsCard" style="display: none;">
+            <div class="card-header" onclick="toggleSection('statsBody')">
+                <i class="fas fa-th-large"></i>
+                <h2>نظرة عامة</h2>
+                <span class="sub">إحصائيات</span>
+                <span class="toggle-icon" id="statsToggle"><i class="fas fa-chevron-up"></i></span>
+            </div>
+            <div class="card-body open" id="statsBody">
+                <div class="legend">
+                    <span><span class="dot purple"></span> يتابعني ويتابعه</span>
+                    <span><span class="dot green"></span> يتابعني ولا أتابعه</span>
+                    <span><span class="dot red"></span> أتابعه ولا يتابعني</span>
+                    <span><span class="dot blue"></span> متابعين جدد</span>
+                    <span><span class="dot orange"></span> ألغوا المتابعة</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item"><div class="num" id="followersCount">0</div><div class="label">المتابعين</div></div>
+                    <div class="stat-item"><div class="num" id="followingCount">0</div><div class="label">يتابعهم</div></div>
+                    <div class="stat-item purple"><div class="num" id="mutualCount">0</div><div class="label">يتابعني ويتابعه</div></div>
+                    <div class="stat-item green"><div class="num" id="notFollowingCount">0</div><div class="label">يتابعني ولا أتابعه</div></div>
+                    <div class="stat-item red"><div class="num" id="notFollowBackCount">0</div><div class="label">أتابعه ولا يتابعني</div></div>
+                    <div class="stat-item blue"><div class="num" id="newFollowersCount">0</div><div class="label">متابعين جدد</div></div>
+                    <div class="stat-item orange"><div class="num" id="unfollowersCount">0</div><div class="label">ألغوا المتابعة</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- يتابعني ولا أتابعه -->
+        <div class="card" id="table1Card" style="display: none;">
+            <div class="card-header" onclick="toggleSection('table1Body')">
+                <i class="fas fa-user-plus" style="color: #4ade80;"></i>
+                <h2>يتابعني ولا أتابعه</h2>
+                <span class="sub" id="count1">0</span>
+                <span class="toggle-icon" id="table1Toggle"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="card-body" id="table1Body">
+                <div class="table-responsive" id="table1Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
+            </div>
+        </div>
+
+        <!-- أتابعه ولا يتابعني -->
+        <div class="card" id="table2Card" style="display: none;">
+            <div class="card-header" onclick="toggleSection('table2Body')">
+                <i class="fas fa-user-minus" style="color: #f87171;"></i>
+                <h2>أتابعه ولا يتابعني</h2>
+                <span class="sub" id="count2">0</span>
+                <span class="toggle-icon" id="table2Toggle"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="card-body" id="table2Body">
+                <div class="table-responsive" id="table2Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
+            </div>
+        </div>
+
+        <!-- متابعين جدد -->
+        <div class="card" id="table3Card" style="display: none;">
+            <div class="card-header" onclick="toggleSection('table3Body')">
+                <i class="fas fa-user-clock" style="color: #60a5fa;"></i>
+                <h2>المتابعين الجدد</h2>
+                <span class="sub" id="count3">0</span>
+                <span class="toggle-icon" id="table3Toggle"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="card-body" id="table3Body">
+                <div class="table-responsive" id="table3Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div></div>
+            </div>
+        </div>
+
+        <!-- ألغوا المتابعة -->
+        <div class="card" id="table4Card" style="display: none;">
+            <div class="card-header" onclick="toggleSection('table4Body')">
+                <i class="fas fa-user-slash" style="color: #fb923c;"></i>
+                <h2>ألغوا المتابعة</h2>
+                <span class="sub" id="count4">0</span>
+                <span class="toggle-icon" id="table4Toggle"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="card-body" id="table4Body">
+                <div class="table-responsive" id="table4Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <i class="fas fa-code"></i> TheraStat · معالجة محلية آمنة · <a href="#" onclick="alert('تم التطوير بواسطة TheraLaugh')">GitHub</a>
+        </div>
     </div>
 
-    <!-- يتابعني ولا أتابعه -->
-    <div class="card" id="table1Card" style="display: none;">
-        <div class="card-header" onclick="toggleSection('table1Body')">
-            <i class="fas fa-user-plus" style="color: #4ade80;"></i>
-            <h2>يتابعني ولا أتابعه</h2>
-            <span class="sub" id="count1">0</span>
-            <span class="toggle-icon" id="table1Toggle"><i class="fas fa-chevron-down"></i></span>
-        </div>
-        <div class="card-body" id="table1Body">
-            <div class="table-responsive" id="table1Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
-        </div>
-    </div>
+    <script>
+        (function() {
+            "use strict";
 
-    <!-- أتابعه ولا يتابعني -->
-    <div class="card" id="table2Card" style="display: none;">
-        <div class="card-header" onclick="toggleSection('table2Body')">
-            <i class="fas fa-user-minus" style="color: #f87171;"></i>
-            <h2>أتابعه ولا يتابعني</h2>
-            <span class="sub" id="count2">0</span>
-            <span class="toggle-icon" id="table2Toggle"><i class="fas fa-chevron-down"></i></span>
-        </div>
-        <div class="card-body" id="table2Body">
-            <div class="table-responsive" id="table2Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
-        </div>
-    </div>
+            // ====== عناصر DOM ======
+            const fileInput = document.getElementById('fileInput');
+            const uploadZone = document.getElementById('uploadZone');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const fileCountSpan = document.getElementById('fileCount');
+            const fileListContainer = document.getElementById('fileListContainer');
 
-    <!-- متابعين جدد -->
-    <div class="card" id="table3Card" style="display: none;">
-        <div class="card-header" onclick="toggleSection('table3Body')">
-            <i class="fas fa-user-clock" style="color: #60a5fa;"></i>
-            <h2>المتابعين الجدد</h2>
-            <span class="sub" id="count3">0</span>
-            <span class="toggle-icon" id="table3Toggle"><i class="fas fa-chevron-down"></i></span>
-        </div>
-        <div class="card-body" id="table3Body">
-            <div class="table-responsive" id="table3Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div></div>
-        </div>
-    </div>
+            const statsCard = document.getElementById('statsCard');
+            const followersCount = document.getElementById('followersCount');
+            const followingCount = document.getElementById('followingCount');
+            const mutualCount = document.getElementById('mutualCount');
+            const notFollowingCount = document.getElementById('notFollowingCount');
+            const notFollowBackCount = document.getElementById('notFollowBackCount');
+            const newFollowersCount = document.getElementById('newFollowersCount');
+            const unfollowersCount = document.getElementById('unfollowersCount');
 
-    <!-- ألغوا المتابعة -->
-    <div class="card" id="table4Card" style="display: none;">
-        <div class="card-header" onclick="toggleSection('table4Body')">
-            <i class="fas fa-user-slash" style="color: #fb923c;"></i>
-            <h2>ألغوا المتابعة</h2>
-            <span class="sub" id="count4">0</span>
-            <span class="toggle-icon" id="table4Toggle"><i class="fas fa-chevron-down"></i></span>
-        </div>
-        <div class="card-body" id="table4Body">
-            <div class="table-responsive" id="table4Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div></div>
-        </div>
-    </div>
+            const table1Card = document.getElementById('table1Card');
+            const table2Card = document.getElementById('table2Card');
+            const table3Card = document.getElementById('table3Card');
+            const table4Card = document.getElementById('table4Card');
 
-    <div class="footer">
-        <i class="fas fa-code"></i> TheraStat · معالجة محلية آمنة · <a href="#" onclick="alert('تم التطوير بواسطة TheraLaugh')">GitHub</a>
-    </div>
-</div>
+            const count1 = document.getElementById('count1');
+            const count2 = document.getElementById('count2');
+            const count3 = document.getElementById('count3');
+            const count4 = document.getElementById('count4');
 
-<script>
-    (function() {
-        "use strict";
+            const table1Container = document.getElementById('table1Container');
+            const table2Container = document.getElementById('table2Container');
+            const table3Container = document.getElementById('table3Container');
+            const table4Container = document.getElementById('table4Container');
 
-        // ====== عناصر DOM ======
-        const fileInput = document.getElementById('fileInput');
-        const uploadZone = document.getElementById('uploadZone');
-        const analyzeBtn = document.getElementById('analyzeBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const fileCountSpan = document.getElementById('fileCount');
-        const fileListContainer = document.getElementById('fileListContainer');
+            let storedFiles = [];
 
-        const statsCard = document.getElementById('statsCard');
-        const followersCount = document.getElementById('followersCount');
-        const followingCount = document.getElementById('followingCount');
-        const mutualCount = document.getElementById('mutualCount');
-        const notFollowingCount = document.getElementById('notFollowingCount');
-        const notFollowBackCount = document.getElementById('notFollowBackCount');
-        const newFollowersCount = document.getElementById('newFollowersCount');
-        const unfollowersCount = document.getElementById('unfollowersCount');
+            // ====== دالة الطي/الفرد ======
+            window.toggleSection = function(bodyId) {
+                const body = document.getElementById(bodyId);
+                if (!body) return;
+                body.classList.toggle('open');
+                const icon = body.parentElement.querySelector('.toggle-icon i');
+                if (icon) {
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                }
+            };
 
-        const table1Card = document.getElementById('table1Card');
-        const table2Card = document.getElementById('table2Card');
-        const table3Card = document.getElementById('table3Card');
-        const table4Card = document.getElementById('table4Card');
-
-        const count1 = document.getElementById('count1');
-        const count2 = document.getElementById('count2');
-        const count3 = document.getElementById('count3');
-        const count4 = document.getElementById('count4');
-
-        const table1Container = document.getElementById('table1Container');
-        const table2Container = document.getElementById('table2Container');
-        const table3Container = document.getElementById('table3Container');
-        const table4Container = document.getElementById('table4Container');
-
-        let storedFiles = [];
-
-        // ====== دالة الطي/الفرد ======
-        window.toggleSection = function(bodyId) {
-            const body = document.getElementById(bodyId);
-            if (!body) return;
-            body.classList.toggle('open');
-            const icon = body.parentElement.querySelector('.toggle-icon i');
-            if (icon) {
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
-            }
-        };
-
-        // ====== استخراج الأسماء من ملف المتابعين ======
-        function extractUsernamesFromFollowers(content) {
-            const set = new Set();
-            try {
-                const data = JSON.parse(content);
-                if (Array.isArray(data)) {
-                    for (let item of data) {
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
+            // ====== استخراج الأسماء من ملف المتابعين ======
+            function extractUsernamesFromFollowers(content) {
+                const set = new Set();
+                try {
+                    const data = JSON.parse(content);
+                    // الحالة الأكثر شيوعاً: مصفوفة مباشرة مع string_list_data
+                    if (Array.isArray(data)) {
+                        for (let item of data) {
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
                             }
                         }
+                        return set;
                     }
-                    return set;
-                }
-                if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
-                    for (let item of data.relationships_followers) {
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
+                    // حالات أخرى للتوافق
+                    if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
+                        for (let item of data.relationships_followers) {
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
                             }
                         }
+                        return set;
                     }
-                    return set;
-                }
-                if (data.followers && Array.isArray(data.followers)) {
-                    for (let item of data.followers) {
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
+                    if (data.followers && Array.isArray(data.followers)) {
+                        for (let item of data.followers) {
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
                             }
                         }
+                        return set;
                     }
-                    return set;
-                }
-            } catch (e) { console.warn('Error reading followers file:', e); }
-            return set;
-        }
-
-        // ====== استخراج الأسماء من ملف المتابَعين ======
-        function extractUsernamesFromFollowing(content) {
-            const set = new Set();
-            try {
-                const data = JSON.parse(content);
-                if (data.relationships_following && Array.isArray(data.relationships_following)) {
-                    for (let item of data.relationships_following) {
-                        if (item.title) set.add(item.title.trim());
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
-                            }
-                        }
-                    }
-                    return set;
-                }
-                if (Array.isArray(data)) {
-                    for (let item of data) {
-                        if (item.title) set.add(item.title.trim());
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
-                            }
-                        }
-                    }
-                    return set;
-                }
-                if (data.following && Array.isArray(data.following)) {
-                    for (let item of data.following) {
-                        if (item.title) set.add(item.title.trim());
-                        if (item.string_list_data && Array.isArray(item.string_list_data)) {
-                            for (let sub of item.string_list_data) {
-                                if (sub.value) set.add(sub.value.trim());
-                            }
-                        }
-                    }
-                    return set;
-                }
-            } catch (e) { console.warn('Error reading following file:', e); }
-            return set;
-        }
-
-        // ====== عرض الجدول ======
-        function renderTable(container, usernamesSet) {
-            if (!usernamesSet || usernamesSet.size === 0) {
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا توجد بيانات</p></div>`;
-                return;
-            }
-            let html = `<table><thead><tr><th>#</th><th>اسم المستخدم</th></tr></thead><tbody>`;
-            let counter = 1;
-            const sorted = Array.from(usernamesSet).sort((a, b) => a.localeCompare(b));
-            for (let username of sorted) {
-                html += `
-                    <tr>
-                        <td style="color:#6a7294;">${counter}</td>
-                        <td>
-                            <div class="username-cell">
-                                <i class="fas fa-user-circle"></i>
-                                <a href="https://www.instagram.com/${username}" target="_blank" rel="noopener noreferrer" class="instagram-link">
-                                    ${username}
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                counter++;
-            }
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
-
-        // ====== التحليل الرئيسي ======
-        function performAnalysis() {
-            if (storedFiles.length === 0) {
-                alert('الرجاء رفع ملفات JSON أولاً.');
-                return;
+                } catch (e) { console.warn('Error reading followers file:', e); }
+                return set;
             }
 
-            // تصنيف الملفات
-            let followersFiles = [];
-            let followingFiles = [];
+            // ====== استخراج الأسماء من ملف المتابَعين ======
+            function extractUsernamesFromFollowing(content) {
+                const set = new Set();
+                try {
+                    const data = JSON.parse(content);
+                    // الحالة الأكثر شيوعاً: relationships_following مع title
+                    if (data.relationships_following && Array.isArray(data.relationships_following)) {
+                        for (let item of data.relationships_following) {
+                            if (item.title) set.add(item.title.trim());
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
+                            }
+                        }
+                        return set;
+                    }
+                    // حالات أخرى للتوافق
+                    if (Array.isArray(data)) {
+                        for (let item of data) {
+                            if (item.title) set.add(item.title.trim());
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
+                            }
+                        }
+                        return set;
+                    }
+                    if (data.following && Array.isArray(data.following)) {
+                        for (let item of data.following) {
+                            if (item.title) set.add(item.title.trim());
+                            if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                                for (let sub of item.string_list_data) {
+                                    if (sub.value) set.add(sub.value.trim());
+                                }
+                            }
+                        }
+                        return set;
+                    }
+                } catch (e) { console.warn('Error reading following file:', e); }
+                return set;
+            }
 
-            for (let file of storedFiles) {
-                if (file.type === 'followers') {
-                    followersFiles.push(file);
-                } else if (file.type === 'following') {
-                    followingFiles.push(file);
+            // ====== عرض الجدول ======
+            function renderTable(container, usernamesSet) {
+                if (!usernamesSet || usernamesSet.size === 0) {
+                    container.innerHTML =
+                        `<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا توجد بيانات</p></div>`;
+                    return;
+                }
+                let html = `<table><thead><tr><th>#</th><th>اسم المستخدم</th></tr></thead><tbody>`;
+                let counter = 1;
+                const sorted = Array.from(usernamesSet).sort((a, b) => a.localeCompare(b));
+                for (let username of sorted) {
+                    html += `
+                            <tr>
+                                <td style="color:#6a7294;">${counter}</td>
+                                <td>
+                                    <div class="username-cell">
+                                        <i class="fas fa-user-circle"></i>
+                                        <a href="https://www.instagram.com/${username}" target="_blank" rel="noopener noreferrer" class="instagram-link">
+                                            ${username}
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    counter++;
+                }
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            }
+
+            // ====== التحليل الرئيسي ======
+            function performAnalysis() {
+                if (storedFiles.length === 0) {
+                    alert('الرجاء رفع ملفات JSON أولاً.');
+                    return;
+                }
+
+                // تصنيف الملفات
+                let followersFiles = [];
+                let followingFiles = [];
+
+                for (let file of storedFiles) {
+                    if (file.type === 'followers') {
+                        followersFiles.push(file);
+                    } else if (file.type === 'following') {
+                        followingFiles.push(file);
+                    } else {
+                        // محاولة التحديد من المحتوى
+                        try {
+                            const data = JSON.parse(file.content);
+                            if (data.relationships_following && Array.isArray(data.relationships_following) && data
+                                .relationships_following[0]?.title) {
+                                followingFiles.push(file);
+                            } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
+                                followersFiles.push(file);
+                            } else if (data.relationships_followers || data.followers) {
+                                followersFiles.push(file);
+                            }
+                        } catch (e) {}
+                    }
+                }
+
+                console.log('📊 عدد ملفات المتابعين:', followersFiles.length);
+                console.log('📊 عدد ملفات المتابَعين:', followingFiles.length);
+
+                // استخراج جميع المتابعين (دمج جميع ملفات المتابعين)
+                let allFollowers = new Set();
+                for (let file of followersFiles) {
+                    const set = extractUsernamesFromFollowers(file.content);
+                    for (let u of set) allFollowers.add(u);
+                }
+
+                // استخراج جميع المتابَعين (دمج جميع ملفات المتابَعين)
+                let allFollowing = new Set();
+                for (let file of followingFiles) {
+                    const set = extractUsernamesFromFollowing(file.content);
+                    for (let u of set) allFollowing.add(u);
+                }
+
+                console.log('📊 إجمالي المتابعين:', allFollowers.size);
+                console.log('📊 إجمالي المتابَعين:', allFollowing.size);
+                console.log('📝 عينة من المتابعين:', Array.from(allFollowers).slice(0, 5));
+                console.log('📝 عينة من المتابَعين:', Array.from(allFollowing).slice(0, 5));
+
+                if (allFollowers.size === 0 && allFollowing.size === 0) {
+                    alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة.');
+                    return;
+                }
+
+                // ===== المقارنات الأساسية (المنطق الصحيح) =====
+
+                // 1. يتابعني ويتابعه = موجود في كلا الملفين (تقاطع)
+                const mutual = new Set();
+                for (let f of allFollowers) {
+                    if (allFollowing.has(f)) mutual.add(f);
+                }
+
+                // 2. يتابعني ولا أتابعه = موجود في followers فقط (not in following)
+                const notFollowing = new Set();
+                for (let f of allFollowers) {
+                    if (!allFollowing.has(f)) notFollowing.add(f);
+                }
+
+                // 3. أتابعه ولا يتابعني = موجود في following فقط (not in followers)
+                const notFollowBack = new Set();
+                for (let f of allFollowing) {
+                    if (!allFollowers.has(f)) notFollowBack.add(f);
+                }
+
+                console.log('📊 يتابعني ويتابعه:', mutual.size);
+                console.log('📊 يتابعني ولا أتابعه:', notFollowing.size);
+                console.log('📊 أتابعه ولا يتابعني:', notFollowBack.size);
+
+                // تحديث الإحصائيات
+                followersCount.innerText = allFollowers.size;
+                followingCount.innerText = allFollowing.size;
+                mutualCount.innerText = mutual.size;
+                notFollowingCount.innerText = notFollowing.size;
+                notFollowBackCount.innerText = notFollowBack.size;
+
+                // عرض الجداول
+                count1.innerText = notFollowing.size;
+                count2.innerText = notFollowBack.size;
+                renderTable(table1Container, notFollowing);
+                renderTable(table2Container, notFollowBack);
+
+                // ===== المقارنات التاريخية (المتابعين الجدد ومن ألغى المتابعة) =====
+                let newFollowers = new Set();
+                let unfollowers = new Set();
+
+                if (followersFiles.length >= 2) {
+                    // نأخذ أول ملف وآخر ملف للمقارنة
+                    const oldest = followersFiles[0];
+                    const newest = followersFiles[followersFiles.length - 1];
+
+                    const oldSet = extractUsernamesFromFollowers(oldest.content);
+                    const newSet = extractUsernamesFromFollowers(newest.content);
+
+                    // متابعين جدد: موجودين في الجديد وليس في القديم
+                    for (let f of newSet) {
+                        if (!oldSet.has(f)) newFollowers.add(f);
+                    }
+
+                    // ألغوا المتابعة: موجودين في القديم وليس في الجديد
+                    for (let f of oldSet) {
+                        if (!newSet.has(f)) unfollowers.add(f);
+                    }
+
+                    console.log('📊 متابعين جدد:', newFollowers.size);
+                    console.log('📊 ألغوا المتابعة:', unfollowers.size);
                 } else {
-                    try {
-                        const data = JSON.parse(file.content);
-                        if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
-                            followingFiles.push(file);
-                        } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
-                            followersFiles.push(file);
-                        } else if (data.relationships_followers || data.followers) {
-                            followersFiles.push(file);
+                    // إذا كان هناك ملف واحد فقط، نعرض رسالة
+                    table3Container.innerHTML =
+                        `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
+                    table4Container.innerHTML =
+                        `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
+                }
+
+                count3.innerText = newFollowers.size;
+                count4.innerText = unfollowers.size;
+                newFollowersCount.innerText = newFollowers.size;
+                unfollowersCount.innerText = unfollowers.size;
+                renderTable(table3Container, newFollowers);
+                renderTable(table4Container, unfollowers);
+
+                // فتح النظرة العامة فقط (الأقسام الأخرى تبقى مطوية)
+                document.getElementById('statsBody').classList.add('open');
+                document.getElementById('statsToggle').querySelector('i').className = 'fas fa-chevron-up';
+
+                // إظهار البطاقات
+                statsCard.style.display = 'block';
+                table1Card.style.display = 'block';
+                table2Card.style.display = 'block';
+                table3Card.style.display = 'block';
+                table4Card.style.display = 'block';
+            }
+
+            // ====== معالجة الملفات ======
+            function handleFiles(files) {
+                if (!files || files.length === 0) return;
+
+                storedFiles = [];
+                let filesRead = 0;
+                const totalFiles = files.length;
+
+                for (let file of files) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const content = e.target.result;
+                        let type = 'unknown';
+                        const name = file.name.toLowerCase();
+
+                        if (name.includes('follower') || name.includes('followers')) {
+                            type = 'followers';
+                        } else if (name.includes('following')) {
+                            type = 'following';
+                        } else {
+                            try {
+                                const data = JSON.parse(content);
+                                if (data.relationships_following && Array.isArray(data.relationships_following) &&
+                                    data.relationships_following[0]?.title) {
+                                    type = 'following';
+                                } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
+                                    type = 'followers';
+                                } else if (data.relationships_followers || data.followers) {
+                                    type = 'followers';
+                                }
+                            } catch (ex) {}
                         }
-                    } catch(e) {}
+
+                        storedFiles.push({ name: file.name, content, type });
+                        filesRead++;
+
+                        if (filesRead === totalFiles) {
+                            updateFileList();
+                            analyzeBtn.disabled = false;
+                            fileCountSpan.innerText = `📂 ${storedFiles.length} ملف(ات)`;
+                        }
+                    };
+                    reader.onerror = function() {
+                        alert('حدث خطأ أثناء قراءة الملف: ' + file.name);
+                        filesRead++;
+                    };
+                    reader.readAsText(file);
                 }
             }
 
-            console.log('📊 Followers files:', followersFiles.length);
-            console.log('📊 Following files:', followingFiles.length);
-
-            // استخراج جميع المتابعين (دمج جميع ملفات المتابعين)
-            let allFollowers = new Set();
-            for (let file of followersFiles) {
-                const set = extractUsernamesFromFollowers(file.content);
-                for (let u of set) allFollowers.add(u);
-            }
-
-            // استخراج جميع المتابَعين (دمج جميع ملفات المتابَعين)
-            let allFollowing = new Set();
-            for (let file of followingFiles) {
-                const set = extractUsernamesFromFollowing(file.content);
-                for (let u of set) allFollowing.add(u);
-            }
-
-            console.log('📊 Total Followers:', allFollowers.size);
-            console.log('📊 Total Following:', allFollowing.size);
-            console.log('📝 Sample Followers:', Array.from(allFollowers).slice(0, 5));
-            console.log('📝 Sample Following:', Array.from(allFollowing).slice(0, 5));
-
-            if (allFollowers.size === 0 && allFollowing.size === 0) {
-                alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة.');
-                return;
-            }
-
-            // ===== المقارنات الأساسية (المنطق الصحيح) =====
-            
-            // 1. يتابعني ويتابعه = موجود في كلا الملفين (تقاطع)
-            const mutual = new Set();
-            for (let f of allFollowers) {
-                if (allFollowing.has(f)) mutual.add(f);
-            }
-
-            // 2. يتابعني ولا أتابعه = موجود في followers فقط (not in following)
-            const notFollowing = new Set();
-            for (let f of allFollowers) {
-                if (!allFollowing.has(f)) notFollowing.add(f);
-            }
-
-            // 3. أتابعه ولا يتابعني = موجود في following فقط (not in followers)
-            const notFollowBack = new Set();
-            for (let f of allFollowing) {
-                if (!allFollowers.has(f)) notFollowBack.add(f);
-            }
-
-            console.log('📊 Mutual:', mutual.size);
-            console.log('📊 Not Following (followers only):', notFollowing.size);
-            console.log('📊 Not Follow Back (following only):', notFollowBack.size);
-
-            // تحديث الإحصائيات
-            followersCount.innerText = allFollowers.size;
-            followingCount.innerText = allFollowing.size;
-            mutualCount.innerText = mutual.size;
-            notFollowingCount.innerText = notFollowing.size;
-            notFollowBackCount.innerText = notFollowBack.size;
-
-            // عرض الجداول
-            count1.innerText = notFollowing.size;
-            count2.innerText = notFollowBack.size;
-            renderTable(table1Container, notFollowing);
-            renderTable(table2Container, notFollowBack);
-
-            // ===== المقارنات التاريخية (المتابعين الجدد ومن ألغى المتابعة) =====
-            let newFollowers = new Set();
-            let unfollowers = new Set();
-
-            if (followersFiles.length >= 2) {
-                // نأخذ أول ملف وآخر ملف للمقارنة
-                const oldest = followersFiles[0];
-                const newest = followersFiles[followersFiles.length - 1];
-
-                const oldSet = extractUsernamesFromFollowers(oldest.content);
-                const newSet = extractUsernamesFromFollowers(newest.content);
-
-                // متابعين جدد: موجودين في الجديد وليس في القديم
-                for (let f of newSet) {
-                    if (!oldSet.has(f)) newFollowers.add(f);
+            function updateFileList() {
+                if (storedFiles.length === 0) {
+                    fileListContainer.innerHTML = '';
+                    return;
                 }
-
-                // ألغوا المتابعة: موجودين في القديم وليس في الجديد
-                for (let f of oldSet) {
-                    if (!newSet.has(f)) unfollowers.add(f);
+                let html = `<div class="file-info"><i class="fas fa-file-code"></i>`;
+                for (let f of storedFiles) {
+                    let typeLabel = 'غير محدد';
+                    let typeClass = '';
+                    if (f.type === 'followers') { typeLabel = 'متابعين';
+                        typeClass = 'followers'; } else if (f.type === 'following') { typeLabel = 'متابَعين';
+                        typeClass = 'following'; }
+                    html += `<span class="fname">${f.name}</span> <span class="file-type-badge ${typeClass}">${typeLabel}</span> `;
                 }
-
-                console.log('📊 New Followers:', newFollowers.size);
-                console.log('📊 Unfollowers:', unfollowers.size);
-            } else {
-                // إذا كان هناك ملف واحد فقط، نعرض رسالة
-                table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
-                table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-info-circle"></i><p>للمقارنة التاريخية، قم برفع 2+ ملفات متابعين</p></div>`;
+                html += `</div>`;
+                fileListContainer.innerHTML = html;
             }
 
-            count3.innerText = newFollowers.size;
-            count4.innerText = unfollowers.size;
-            newFollowersCount.innerText = newFollowers.size;
-            unfollowersCount.innerText = unfollowers.size;
-            renderTable(table3Container, newFollowers);
-            renderTable(table4Container, unfollowers);
+            // ====== الأحداث ======
+            uploadZone.addEventListener('click', () => fileInput.click());
 
-            // فتح جميع الأقسام تلقائياً (باستثناء الجداول التي تبقى مطوية)
-            document.querySelectorAll('.card-body').forEach(el => el.classList.add('open'));
-            document.querySelectorAll('.toggle-icon i').forEach(el => {
-                el.classList.remove('fa-chevron-down');
-                el.classList.add('fa-chevron-up');
+            fileInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    handleFiles(this.files);
+                }
+                this.value = '';
             });
 
-            // إظهار البطاقات
-            statsCard.style.display = 'block';
-            table1Card.style.display = 'block';
-            table2Card.style.display = 'block';
-            table3Card.style.display = 'block';
-            table4Card.style.display = 'block';
-        }
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = '#b8abff';
+            });
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.style.borderColor = '#3d4460';
+            });
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = '#3d4460';
+                if (e.dataTransfer.files.length) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
 
-        // ====== معالجة الملفات ======
-        function handleFiles(files) {
-            if (!files || files.length === 0) return;
-            
-            storedFiles = [];
-            let filesRead = 0;
-            const totalFiles = files.length;
+            analyzeBtn.addEventListener('click', performAnalysis);
 
-            for (let file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const content = e.target.result;
-                    let type = 'unknown';
-                    const name = file.name.toLowerCase();
-                    
-                    if (name.includes('follower') || name.includes('followers')) {
-                        type = 'followers';
-                    } else if (name.includes('following')) {
-                        type = 'following';
-                    } else {
-                        try {
-                            const data = JSON.parse(content);
-                            if (data.relationships_following && Array.isArray(data.relationships_following) && data.relationships_following[0]?.title) {
-                                type = 'following';
-                            } else if (Array.isArray(data) && data.length > 0 && data[0].string_list_data) {
-                                type = 'followers';
-                            } else if (data.relationships_followers || data.followers) {
-                                type = 'followers';
-                            }
-                        } catch(ex) {}
-                    }
-                    
-                    storedFiles.push({ name: file.name, content, type });
-                    filesRead++;
-                    
-                    if (filesRead === totalFiles) {
-                        updateFileList();
-                        analyzeBtn.disabled = false;
-                        fileCountSpan.innerText = `📂 ${storedFiles.length} ملف(ات)`;
-                    }
-                };
-                reader.onerror = function() {
-                    alert('حدث خطأ أثناء قراءة الملف: ' + file.name);
-                    filesRead++;
-                };
-                reader.readAsText(file);
-            }
-        }
-
-        function updateFileList() {
-            if (storedFiles.length === 0) {
+            resetBtn.addEventListener('click', function() {
+                storedFiles = [];
+                fileInput.value = '';
                 fileListContainer.innerHTML = '';
-                return;
-            }
-            let html = `<div class="file-info"><i class="fas fa-file-code"></i>`;
-            for (let f of storedFiles) {
-                let typeLabel = 'غير محدد';
-                let typeClass = '';
-                if (f.type === 'followers') { typeLabel = 'متابعين'; typeClass = 'followers'; }
-                else if (f.type === 'following') { typeLabel = 'متابَعين'; typeClass = 'following'; }
-                html += `<span class="fname">${f.name}</span> <span class="file-type-badge ${typeClass}">${typeLabel}</span> `;
-            }
-            html += `</div>`;
-            fileListContainer.innerHTML = html;
-        }
+                fileCountSpan.innerText = '';
+                analyzeBtn.disabled = true;
 
-        // ====== الأحداث ======
-        uploadZone.addEventListener('click', () => fileInput.click());
+                statsCard.style.display = 'none';
+                table1Card.style.display = 'none';
+                table2Card.style.display = 'none';
+                table3Card.style.display = 'none';
+                table4Card.style.display = 'none';
 
-        fileInput.addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                handleFiles(this.files);
-            }
-            this.value = '';
-        });
+                table1Container.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+                table2Container.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+                table3Container.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div>`;
+                table4Container.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div>`;
+            });
 
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = '#b8abff';
-        });
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.style.borderColor = '#3d4460';
-        });
-        uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = '#3d4460';
-            if (e.dataTransfer.files.length) {
-                handleFiles(e.dataTransfer.files);
-            }
-        });
-
-        analyzeBtn.addEventListener('click', performAnalysis);
-
-        resetBtn.addEventListener('click', function() {
-            storedFiles = [];
-            fileInput.value = '';
-            fileListContainer.innerHTML = '';
-            fileCountSpan.innerText = '';
-            analyzeBtn.disabled = true;
-            
-            statsCard.style.display = 'none';
-            table1Card.style.display = 'none';
-            table2Card.style.display = 'none';
-            table3Card.style.display = 'none';
-            table4Card.style.display = 'none';
-            
-            table1Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
-            table2Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
-            table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div>`;
-            table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم برفع 2+ ملفات متابعين للمقارنة</p></div>`;
-        });
-
-        console.log('✅ TheraStat جاهز!');
-    })();
-</script>
+            console.log('✅ TheraStat جاهز!');
+        })();
+    </script>
 </body>
 </html>
