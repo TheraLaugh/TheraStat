@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>TheraStat | تحليل إحصائيات إنستغرام</title>
+    <!-- Font & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0b0d15;
+            color: #eaeef2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.5rem 4rem;
+            background-image: radial-gradient(circle at 20% 30%, #1a1f2e 0%, #0b0d15 90%);
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* الهوية البصرية - مثل TheraQR و TheraGYM */
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logo h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f0b3ff, #8a7cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #8892b0;
+            -webkit-text-fill-color: #8892b0;
+            background: none;
+            display: block;
+        }
+
+        .badge {
+            background: rgba(138, 124, 255, 0.15);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #8a7cff55;
+            font-size: 0.85rem;
+            color: #c4b5ff;
+            backdrop-filter: blur(4px);
+        }
+        .badge i {
+            margin-left: 8px;
+        }
+
+        /* البطاقات */
+        .card {
+            background: rgba(22, 27, 40, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
+            transition: transform 0.2s ease;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+        }
+        .card-header i {
+            font-size: 1.8rem;
+            color: #8a7cff;
+            width: 2.2rem;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #f0f4fa;
+        }
+        .card-header .sub {
+            margin-right: auto;
+            font-size: 0.9rem;
+            color: #8892b0;
+            background: #1a1f2e;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+        }
+
+        /* رفع الملفات */
+        .upload-zone {
+            border: 2px dashed #3d4460;
+            border-radius: 24px;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .upload-zone:hover {
+            border-color: #8a7cff;
+            background: rgba(138, 124, 255, 0.04);
+        }
+        .upload-zone i {
+            font-size: 3.2rem;
+            color: #8a7cff;
+            margin-bottom: 0.5rem;
+        }
+        .upload-zone p {
+            color: #b0b9d6;
+            font-weight: 600;
+        }
+        .upload-zone .hint {
+            font-size: 0.85rem;
+            color: #6a7294;
+            margin-top: 8px;
+        }
+        #fileInput {
+            display: none;
+        }
+
+        /* أزرار وقياسات */
+        .btn-primary {
+            background: linear-gradient(135deg, #8a7cff, #6b5cdf);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            padding: 0.9rem 2.2rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #9b8eff55;
+            box-shadow: 0 8px 18px -6px #6b5cdf55;
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: #9b8eff;
+            box-shadow: 0 12px 24px -8px #6b5cdf99;
+        }
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #4a5272;
+            color: #ccd2e6;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 0.9rem;
+        }
+        .btn-outline:hover {
+            border-color: #8a7cff;
+            color: #fff;
+            background: #2a2f46;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            margin-top: 1.8rem;
+        }
+
+        /* إحصائيات سريعة */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 16px;
+            margin: 1.2rem 0 0.6rem;
+        }
+        .stat-item {
+            background: #141a28;
+            border-radius: 20px;
+            padding: 0.9rem 0.5rem;
+            text-align: center;
+            border: 1px solid #2b3147;
+        }
+        .stat-item .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f0f4fa;
+            direction: ltr;
+        }
+        .stat-item .label {
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+        .stat-item.purple .num { color: #b8abff; }
+
+        /* جداول البيانات */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 0.8rem;
+            border-radius: 18px;
+            background: #0e121f;
+            padding: 0.2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 340px;
+        }
+        th {
+            text-align: right;
+            padding: 1rem 0.8rem;
+            background: #191f31;
+            color: #b0bbdd;
+            font-weight: 600;
+            border-bottom: 2px solid #2f3651;
+        }
+        td {
+            padding: 0.9rem 0.8rem;
+            border-bottom: 1px solid #222a3e;
+            color: #d6def0;
+        }
+        tr:last-child td { border-bottom: none; }
+        .username-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .username-cell i {
+            color: #8a7cff;
+            font-size: 1.2rem;
+            width: 1.8rem;
+        }
+        .tag {
+            background: #2f3651;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #bcc6e5;
+            margin-right: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 0.5rem;
+            color: #6a7294;
+        }
+        .empty-state i {
+            font-size: 2.8rem;
+            color: #3d4460;
+            margin-bottom: 0.5rem;
+        }
+
+        /* قسم الملفات المعالجة */
+        .file-info {
+            background: #101624;
+            border-radius: 18px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 20px;
+            margin-bottom: 1.2rem;
+            border-right: 4px solid #8a7cff;
+        }
+        .file-info i {
+            color: #8a7cff;
+            font-size: 1.4rem;
+        }
+        .file-info .fname {
+            font-weight: 600;
+            color: #d6def0;
+            word-break: break-all;
+        }
+        .file-info .fsize {
+            color: #6a7294;
+            font-size: 0.85rem;
+        }
+
+        /* التذيير */
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #4a5272;
+            font-size: 0.9rem;
+            border-top: 1px solid #1a1f2e;
+            padding-top: 2rem;
+            width: 100%;
+        }
+        .footer a {
+            color: #8a7cff;
+            text-decoration: none;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 650px) {
+            body { padding: 1rem 0.8rem; }
+            .card { padding: 1.5rem 1rem; }
+            .logo h1 { font-size: 1.8rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <!-- الهوية البصرية -->
+    <div class="brand">
+        <div class="logo">
+            <h1><i class="fas fa-chart-line" style="background: none; -webkit-text-fill-color: #8a7cff; margin-left: 8px;"></i>TheraStat</h1>
+            <span>تحليل متقدم لبيانات إنستغرام</span>
+        </div>
+        <div class="badge">
+            <i class="fas fa-shield-alt"></i> معالجة محلية 100%
+        </div>
+    </div>
+
+    <!-- بطاقة رفع الملف -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-upload"></i>
+            <h2>رفع ملف البيانات</h2>
+            <span class="sub">JSON من إنستغرام</span>
+        </div>
+        <div class="upload-zone" id="uploadZone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>انقر لاختيار ملف <strong>followers_1.json</strong> أو <strong>following.json</strong></p>
+            <div class="hint">يمكنك رفع ملف واحد أو كليهما معاً (حدد ملفات متعددة)</div>
+            <input type="file" id="fileInput" accept=".json" multiple>
+        </div>
+        <div class="flex-row">
+            <button class="btn-primary" id="analyzeBtn" disabled><i class="fas fa-microchip"></i> تحليل البيانات</button>
+            <button class="btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> إعادة تعيين</button>
+            <span id="fileCount" style="margin-right:auto; color:#6a7294; font-size:0.9rem;"></span>
+        </div>
+        <!-- عرض معلومات الملفات المرفوعة -->
+        <div id="fileListContainer" style="margin-top: 1.2rem;"></div>
+    </div>
+
+    <!-- بطاقة الإحصائيات العامة -->
+    <div class="card" id="statsCard" style="display: none;">
+        <div class="card-header">
+            <i class="fas fa-th-large"></i>
+            <h2>نظرة عامة</h2>
+            <span class="sub">إحصائيات</span>
+        </div>
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-item"><div class="num" id="followersCount">0</div><div class="label">المتابعين</div></div>
+            <div class="stat-item"><div class="num" id="followingCount">0</div><div class="label">يتابعهم</div></div>
+            <div class="stat-item purple"><div class="num" id="notFollowBackCount">0</div><div class="label">لا يتابعوني</div></div>
+            <div class="stat-item purple"><div class="num" id="notFollowingCount">0</div><div class="label">لا أتابعهم</div></div>
+        </div>
+    </div>
+
+    <!-- بطاقات الجداول (4 جداول) -->
+    <!-- 1. من يتابعني ولا أتابعه -->
+    <div class="card" id="table1Card" style="display: none;">
+        <div class="card-header">
+            <i class="fas fa-user-plus"></i>
+            <h2>يُتابعني ولا أتابعه</h2>
+            <span class="sub" id="count1">0</span>
+        </div>
+        <div class="table-responsive" id="table1Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
+    </div>
+
+    <!-- 2. أتابعه ولا يتابعني -->
+    <div class="card" id="table2Card" style="display: none;">
+        <div class="card-header">
+            <i class="fas fa-user-minus"></i>
+            <h2>أتابعه ولا يُتابعني</h2>
+            <span class="sub" id="count2">0</span>
+        </div>
+        <div class="table-responsive" id="table2Container"><div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div></div>
+    </div>
+
+    <!-- 3. متابعين جدد (منذ آخر تحليل) - سيتم محاكاتها -->
+    <div class="card" id="table3Card" style="display: none;">
+        <div class="card-header">
+            <i class="fas fa-user-clock"></i>
+            <h2>متابعين جدد (تقديري)</h2>
+            <span class="sub" id="count3">0</span>
+        </div>
+        <div class="table-responsive" id="table3Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div></div>
+    </div>
+
+    <!-- 4. من ألغى المتابعة (تقديري) -->
+    <div class="card" id="table4Card" style="display: none;">
+        <div class="card-header">
+            <i class="fas fa-user-slash"></i>
+            <h2>ألغى المتابعة (تقديري)</h2>
+            <span class="sub" id="count4">0</span>
+        </div>
+        <div class="table-responsive" id="table4Container"><div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div></div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-code"></i> TheraStat · معالجة محلية آمنة · <a href="#" onclick="alert('تم التطوير بواسطة TheraLaugh')">GitHub</a>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // عناصر واجهة المستخدم
+        const fileInput = document.getElementById('fileInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const fileCountSpan = document.getElementById('fileCount');
+        const fileListContainer = document.getElementById('fileListContainer');
+
+        // عناصر الإحصائيات
+        const statsCard = document.getElementById('statsCard');
+        const followersCount = document.getElementById('followersCount');
+        const followingCount = document.getElementById('followingCount');
+        const notFollowBackCount = document.getElementById('notFollowBackCount');
+        const notFollowingCount = document.getElementById('notFollowingCount');
+
+        // جداول
+        const table1Card = document.getElementById('table1Card');
+        const table2Card = document.getElementById('table2Card');
+        const table3Card = document.getElementById('table3Card');
+        const table4Card = document.getElementById('table4Card');
+
+        const count1 = document.getElementById('count1');
+        const count2 = document.getElementById('count2');
+        const count3 = document.getElementById('count3');
+        const count4 = document.getElementById('count4');
+
+        const table1Container = document.getElementById('table1Container');
+        const table2Container = document.getElementById('table2Container');
+        const table3Container = document.getElementById('table3Container');
+        const table4Container = document.getElementById('table4Container');
+
+        // حالة التخزين
+        let storedFiles = []; // { name, content, type: 'followers'|'following' }
+        let currentFollowers = new Set();
+        let currentFollowing = new Set();
+
+        // ----- مساعدات -----
+        function extractUsernamesFromFollowers(content) {
+            const set = new Set();
+            try {
+                const data = JSON.parse(content);
+                // هيكل متابعين إنستغرام: قائمة objects بداخل "relationships_followers"
+                let list = [];
+                if (data.relationships_followers && Array.isArray(data.relationships_followers)) {
+                    list = data.relationships_followers;
+                } else if (Array.isArray(data)) {
+                    list = data;
+                } else if (data.followers && Array.isArray(data.followers)) {
+                    list = data.followers;
+                }
+                for (let item of list) {
+                    if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                        for (let sub of item.string_list_data) {
+                            if (sub.value) set.add(sub.value.trim());
+                        }
+                    } else if (item.username) {
+                        set.add(item.username.trim());
+                    } else if (item.value) {
+                        set.add(item.value.trim());
+                    }
+                }
+            } catch (e) { console.warn('خطأ في قراءة ملف المتابعين', e); }
+            return set;
+        }
+
+        function extractUsernamesFromFollowing(content) {
+            const set = new Set();
+            try {
+                const data = JSON.parse(content);
+                let list = [];
+                if (data.relationships_following && Array.isArray(data.relationships_following)) {
+                    list = data.relationships_following;
+                } else if (Array.isArray(data)) {
+                    list = data;
+                } else if (data.following && Array.isArray(data.following)) {
+                    list = data.following;
+                }
+                for (let item of list) {
+                    if (item.string_list_data && Array.isArray(item.string_list_data)) {
+                        for (let sub of item.string_list_data) {
+                            if (sub.value) set.add(sub.value.trim());
+                        }
+                    } else if (item.username) {
+                        set.add(item.username.trim());
+                    } else if (item.value) {
+                        set.add(item.value.trim());
+                    }
+                }
+            } catch (e) { console.warn('خطأ في قراءة ملف المتابَعين', e); }
+            return set;
+        }
+
+        // ----- عرض الجداول -----
+        function renderTable(container, usernamesSet, title = '') {
+            if (!usernamesSet || usernamesSet.size === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا توجد بيانات</p></div>`;
+                return;
+            }
+            let html = `<table><thead><tr><th>#</th><th>اسم المستخدم</th></tr></thead><tbody>`;
+            let counter = 1;
+            const sorted = Array.from(usernamesSet).sort((a,b) => a.localeCompare(b));
+            for (let username of sorted) {
+                html += `<tr><td style="color:#6a7294;">${counter}</td><td><div class="username-cell"><i class="fas fa-user-circle"></i> ${username}</div></td></tr>`;
+                counter++;
+            }
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        // ----- التحليل الرئيسي -----
+        function performAnalysis() {
+            // reset previous
+            currentFollowers = new Set();
+            currentFollowing = new Set();
+
+            let hasFollowers = false, hasFollowing = false;
+
+            for (let file of storedFiles) {
+                if (file.type === 'followers') {
+                    const set = extractUsernamesFromFollowers(file.content);
+                    for (let u of set) currentFollowers.add(u);
+                    hasFollowers = true;
+                } else if (file.type === 'following') {
+                    const set = extractUsernamesFromFollowing(file.content);
+                    for (let u of set) currentFollowing.add(u);
+                    hasFollowing = true;
+                }
+            }
+
+            // إذا لم يتم التعرف على نوع الملفات، نحاول تخمينها
+            if (!hasFollowers && !hasFollowing && storedFiles.length > 0) {
+                // محاولة تخمين: نفحص المحتوى
+                for (let file of storedFiles) {
+                    try {
+                        const data = JSON.parse(file.content);
+                        if (data.relationships_followers || data.followers) {
+                            const set = extractUsernamesFromFollowers(file.content);
+                            for (let u of set) currentFollowers.add(u);
+                            hasFollowers = true;
+                        } else if (data.relationships_following || data.following) {
+                            const set = extractUsernamesFromFollowing(file.content);
+                            for (let u of set) currentFollowing.add(u);
+                            hasFollowing = true;
+                        }
+                    } catch(e) {}
+                }
+            }
+
+            // إذا كان لدينا متابعين فقط أو متبوعين فقط نتعامل
+            if (currentFollowers.size === 0 && currentFollowing.size === 0) {
+                alert('لم يتم العثور على بيانات متابعين أو متبوعين صالحة. تأكد من رفع الملفات الصحيحة.');
+                return;
+            }
+
+            // تحديث الإحصائيات
+            followersCount.innerText = currentFollowers.size;
+            followingCount.innerText = currentFollowing.size;
+
+            // حساب: يتابعني ولا أتابعه (في followers وليس في following)
+            const notFollowingMe = new Set();
+            for (let f of currentFollowers) {
+                if (!currentFollowing.has(f)) notFollowingMe.add(f);
+            }
+            // حساب: أتابعه ولا يتابعني (في following وليس في followers)
+            const notFollowBack = new Set();
+            for (let f of currentFollowing) {
+                if (!currentFollowers.has(f)) notFollowBack.add(f);
+            }
+
+            notFollowBackCount.innerText = notFollowBack.size;
+            notFollowingCount.innerText = notFollowingMe.size;
+
+            // عرض الجداول الأساسية
+            count1.innerText = notFollowingMe.size;
+            count2.innerText = notFollowBack.size;
+            renderTable(table1Container, notFollowingMe);
+            renderTable(table2Container, notFollowBack);
+
+            // جدول 3 و 4: متابعين جدد / ألغى المتابعة (تعتمد على المقارنة مع بيانات سابقة مخزنة)
+            // نستخدم localStorage لتخزين جلسات سابقة (مجرد محاكاة)
+            const previousFollowers = localStorage.getItem('theraStat_prevFollowers');
+            const previousFollowing = localStorage.getItem('theraStat_prevFollowing');
+
+            const newFollowers = new Set();
+            const unfollowers = new Set();
+
+            if (previousFollowers) {
+                try {
+                    const prevSet = new Set(JSON.parse(previousFollowers));
+                    for (let f of currentFollowers) {
+                        if (!prevSet.has(f)) newFollowers.add(f);
+                    }
+                    for (let f of prevSet) {
+                        if (!currentFollowers.has(f)) unfollowers.add(f);
+                    }
+                } catch(e) {}
+            } else {
+                // أول تحليل: نعتبر الكل جدد (أو لا نعرض)
+                // نتركها فارغة مع رسالة
+            }
+
+            // تخزين البيانات الحالية للمقارنة القادمة
+            localStorage.setItem('theraStat_prevFollowers', JSON.stringify(Array.from(currentFollowers)));
+            localStorage.setItem('theraStat_prevFollowing', JSON.stringify(Array.from(currentFollowing)));
+
+            count3.innerText = newFollowers.size;
+            count4.innerText = unfollowers.size;
+            renderTable(table3Container, newFollowers);
+            renderTable(table4Container, unfollowers);
+
+            // إظهار البطاقات
+            statsCard.style.display = 'block';
+            table1Card.style.display = 'block';
+            table2Card.style.display = 'block';
+            table3Card.style.display = 'block';
+            table4Card.style.display = 'block';
+        }
+
+        // ----- إدارة الملفات المرفوعة -----
+        function handleFiles(files) {
+            storedFiles = [];
+            const fileNames = [];
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    let type = 'unknown';
+                    const name = file.name.toLowerCase();
+                    if (name.includes('follower') || name.includes('followers')) type = 'followers';
+                    else if (name.includes('following')) type = 'following';
+                    else {
+                        // محاولة تخمين من المحتوى
+                        try {
+                            const data = JSON.parse(content);
+                            if (data.relationships_followers || data.followers) type = 'followers';
+                            else if (data.relationships_following || data.following) type = 'following';
+                        } catch(ex) {}
+                    }
+                    storedFiles.push({ name: file.name, content, type });
+                    fileNames.push(file.name);
+                    // تحديث واجهة الملفات
+                    updateFileList();
+                    if (storedFiles.length === files.length) {
+                        analyzeBtn.disabled = false;
+                        fileCountSpan.innerText = `📂 ${storedFiles.length} ملف(ات)`;
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function updateFileList() {
+            if (storedFiles.length === 0) {
+                fileListContainer.innerHTML = '';
+                return;
+            }
+            let html = `<div class="file-info"><i class="fas fa-file-code"></i>`;
+            for (let f of storedFiles) {
+                const typeLabel = f.type === 'followers' ? 'متابعين' : (f.type === 'following' ? 'متابَعين' : 'غير محدد');
+                html += `<span class="fname">${f.name}</span> <span class="fsize">[${typeLabel}]</span> `;
+            }
+            html += `</div>`;
+            fileListContainer.innerHTML = html;
+        }
+
+        // ----- أحداث -----
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                handleFiles(this.files);
+            }
+            this.value = ''; // لإعادة الاختيار
+        });
+
+        analyzeBtn.addEventListener('click', performAnalysis);
+
+        resetBtn.addEventListener('click', function() {
+            storedFiles = [];
+            currentFollowers = new Set();
+            currentFollowing = new Set();
+            fileInput.value = '';
+            fileListContainer.innerHTML = '';
+            fileCountSpan.innerText = '';
+            analyzeBtn.disabled = true;
+            statsCard.style.display = 'none';
+            table1Card.style.display = 'none';
+            table2Card.style.display = 'none';
+            table3Card.style.display = 'none';
+            table4Card.style.display = 'none';
+            localStorage.removeItem('theraStat_prevFollowers');
+            localStorage.removeItem('theraStat_prevFollowing');
+            // إعادة تعيين الجداول
+            table1Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+            table2Container.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>لا يوجد</p></div>`;
+            table3Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
+            table4Container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>قم بالتحليل مرتين لمقارنة التغيرات</p></div>`;
+        });
+
+        // السحب والإفلات (تحسين)
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = '#b8abff'; });
+        uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = '#3d4460'; });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#3d4460';
+            if (e.dataTransfer.files.length) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+
+        // تحميل أولي: رسالة ترحيب
+        console.log('TheraStat جاهز!');
+    })();
+</script>
+</body>
+</html>
